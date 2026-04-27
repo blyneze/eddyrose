@@ -39,6 +39,16 @@ const GALLERY_IMAGES = [
     caption: "Reading Corner",
     category: "Facilities",
   },
+  {
+    url: "https://images.unsplash.com/photo-1512820790803-83ca734da794?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    caption: "Reading Corner",
+    category: "Facilities",
+  },
+  {
+    url: "https://images.unsplash.com/photo-1512820790803-83ca734da794?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    caption: "Reading Corner",
+    category: "Facilities",
+  },
 ];
 
 export default function GalleryPage() {
@@ -70,7 +80,7 @@ export default function GalleryPage() {
       {/* Gallery Grid */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-wrap items-center justify-center gap-1 md:gap-2 mb-12">
+          <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
             {["All", "Learning", "Classroom", "Events", "Facilities"].map(
               (cat) => (
                 <button
@@ -104,14 +114,11 @@ export default function GalleryPage() {
             ))}
           </div>
 
-          <div className="mt-20 text-center bg-zinc-50 rounded-[3rem] p-12 border border-zinc-100">
-            <div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-6 text-eddyrose-deep">
-              <Camera size={28} />
-            </div>
+          <div className="mt-10 text-center bg-zinc-50 rounded-[1rem] p-12 border border-zinc-100">
             <h3 className="text-2xl font-bold text-zinc-900 mb-4">
               Capturing Moments
             </h3>
-            <p className="text-zinc-500 max-w-xl mx-auto mb-8">
+            <p className="text-zinc-500 text-sm md:text-base max-w-xl mx-auto">
               We regularly update our gallery with new photos from competitions,
               academic milestones, and school celebrations. Stay tuned for more!
             </p>

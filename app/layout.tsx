@@ -21,6 +21,13 @@ export const metadata: Metadata = {
     "Eddyrose International Academy — nurturing excellence in education. Access your result portal, news, and school information.",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -29,9 +36,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dmSans.variable} ${bricolage.variable} h-full antialiased font-sans`}
+      className={`${dmSans.variable} ${bricolage.variable} antialiased font-sans`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-screen flex flex-col antialiased font-sans">
+        {children}
+      </body>
     </html>
   );
 }

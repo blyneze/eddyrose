@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { Camera, Image as ImageIcon } from "lucide-react";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "School Gallery | Eddyrose International Academy",
@@ -44,14 +45,15 @@ export default function GalleryPage() {
     <>
       {/* Hero */}
       <section className="relative w-full pt-16 md:pt-24 pb-20 bg-eddyrose-deep overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)",
-              backgroundSize: "30px 30px",
-            }}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/gallery-hero.png"
+            alt="Gallery"
+            fill
+            className="object-cover opacity-30"
+            priority
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-eddyrose-deep via-eddyrose-deep/60 to-transparent" />
         </div>
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-6">

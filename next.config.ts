@@ -36,22 +36,27 @@ const securityHeaders = [
     value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
   },
   {
-    key: "Strict-Transport-Security",
-    value: "max-age=31536000; includeSubDomains",
-  },
-  {
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-eval' 'unsafe-inline'", // 'unsafe-eval' required by Next.js dev mode
+      "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
-      "img-src 'self' data: blob:",
-      "connect-src 'self'",
+      "img-src 'self' data: blob: https: *", // Allow images from any secure source
+      "connect-src 'self' https://vitals.vercel-insights.com",
+      "frame-src 'self' https://www.google.com", // Allow Google Maps
       "frame-ancestors 'none'",
     ].join("; "),
   },
 ];
+
+// Production-only headers
+if (process.env.NODE_ENV === "production") {
+  securityHeaders.push({
+    key: "Strict-Transport-Security",
+    value: "max-age=31536000; includeSubDomains; preload",
+  });
+}
 
 const nextConfig: NextConfig = {
   async headers() {

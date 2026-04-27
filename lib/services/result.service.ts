@@ -16,6 +16,9 @@ export async function getAdminResults() {
     select: {
       id: true,
       status: true,
+      studentId: true,
+      sessionId: true,
+      termId: true,
       student: { select: STUDENT_SELECT },
       class: { select: CLASS_SELECT },
     },
@@ -46,6 +49,9 @@ export async function getTeacherResults(userId: string) {
     select: {
       id: true,
       status: true,
+      studentId: true,
+      sessionId: true,
+      termId: true,
       student: { select: STUDENT_SELECT },
     },
   })
@@ -76,6 +82,9 @@ export async function getParentResults(userId: string) {
     select: {
       id: true,
       status: true,
+      studentId: true,
+      sessionId: true,
+      termId: true,
       student: { select: STUDENT_SELECT },
       class: { select: CLASS_SELECT },
     },

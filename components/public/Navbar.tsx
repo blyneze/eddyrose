@@ -14,8 +14,10 @@ const NAV_LINKS = [
     hasDropdown: true,
     links: [
       { name: "Our Story", href: "/about" },
-      { name: "Mission & Vision", href: "/about#mission" },
-      { name: "Our Team", href: "/about#team" },
+      { name: "Mission & Vision", href: "/about/mission" },
+      { name: "Our Director", href: "/about/director" },
+      { name: "Safeguarding", href: "/about/safeguarding" },
+      { name: "Careers", href: "/about/careers" },
     ],
   },
   {
@@ -23,30 +25,43 @@ const NAV_LINKS = [
     href: "/academics",
     hasDropdown: true,
     links: [
-      { name: "Programmes", href: "/academics" },
-      { name: "Curriculum", href: "/academics#curriculum" },
+      { name: "Our Curriculum", href: "/academics" },
+      { name: "Extracurriculars", href: "/academics#extra" },
       { name: "Results", href: "/academics#results" },
+      { name: "Library", href: "/academics#library" },
     ],
   },
   {
-    name: "School Life",
-    href: "/gallery",
+    name: "Admissions",
+    href: "/admissions",
     hasDropdown: true,
     links: [
-      { name: "Gallery", href: "/gallery" },
-      { name: "News & Events", href: "/news" },
-      { name: "Extracurriculars", href: "/academics#extra" },
+      { name: "Admissions Process", href: "/admissions" },
+      { name: "School Fees", href: "/admissions/fees" },
+      { name: "Book a Tour", href: "/admissions/book-tour" },
+      { name: "Apply Now", href: "/admissions/apply" },
     ],
   },
-  { name: "Admission", href: "/admissions" },
+  {
+    name: "Parents",
+    href: "/parents",
+    hasDropdown: true,
+    links: [
+      { name: "Latest News", href: "/parents" },
+      { name: "Term Dates", href: "/parents/term-dates" },
+      { name: "School Timings", href: "/parents/timings" },
+      { name: "Uniform", href: "/parents/uniform" },
+      { name: "Canteen", href: "/parents/canteen" },
+    ],
+  },
 ];
 
 const ALL_LINKS = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
+  { name: "Learning", href: "/academics" },
   { name: "Admissions", href: "/admissions" },
-  { name: "Academics", href: "/academics" },
-  { name: "Gallery", href: "/gallery" },
+  { name: "Parents", href: "/parents" },
 ];
 
 export default function Navbar() {
@@ -60,11 +75,17 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock body scroll when mobile menu is open
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+      document.body.style.touchAction = "none";
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
+    }
     return () => {
       document.body.style.overflow = "";
+      document.body.style.touchAction = "";
     };
   }, [menuOpen]);
 
@@ -79,6 +100,9 @@ export default function Navbar() {
             ? "bg-white/90 backdrop-blur-md shadow-[0_1px_0_0_rgba(0,0,0,0.06)]"
             : "bg-[#f8f9fa]"
         }`}
+        style={{
+          WebkitBackdropFilter: isScrolled ? "blur(12px)" : "none",
+        }}
       >
         <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16">
           <div
@@ -103,7 +127,7 @@ export default function Navbar() {
                   <span className="text-[16px] md:text-[20px] font-black text-eddyrose-deep tracking-tight">
                     Eddyrose
                   </span>
-                  <span className="text-[11px] md:text-[14px] font-bold text-eddyrose-light/80 tracking-tight -mt-1 md:-mt-0">
+                  <span className="text-[11px] md:text-[14px] font-bold text-eddyrose-light/80 tracking-tight md:-mt-1 md:-mt-0">
                     International Academy
                   </span>
                 </div>
@@ -216,6 +240,7 @@ export default function Navbar() {
 
                 {/* Mobile Hamburger */}
                 <button
+                  type="button"
                   onClick={() => setMenuOpen(true)}
                   aria-label="Open navigation menu"
                   className="
@@ -229,6 +254,7 @@ export default function Navbar() {
                     shadow-sm
                     active:scale-95 transition-transform
                     cursor-pointer
+                    touch-manipulation
                   "
                 >
                   <Menu size={22} strokeWidth={2.5} />

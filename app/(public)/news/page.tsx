@@ -67,14 +67,15 @@ export default function NewsPage() {
     <>
       {/* Hero */}
       <section className="relative w-full pt-16 md:pt-24 pb-20 md:pb-32 bg-eddyrose-deep overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)",
-              backgroundSize: "30px 30px",
-            }}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/news-hero.png"
+            alt="News & Events"
+            fill
+            className="object-cover opacity-30"
+            priority
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-eddyrose-deep via-eddyrose-deep/60 to-transparent" />
         </div>
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6">

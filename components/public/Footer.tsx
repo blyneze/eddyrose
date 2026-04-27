@@ -89,18 +89,17 @@ const NAV_COLS = [
 export default function Footer() {
   return (
     <footer
-      className="w-full"
+      className="w-full relative overflow-hidden"
       style={{
         background: "linear-gradient(160deg, #0B2545 0%, #081a31 100%)",
       }}
     >
       {/* ── Subtle dot grid ── */}
       <div
-        className="pointer-events-none absolute w-full opacity-[0.035]"
+        className="pointer-events-none absolute inset-0 w-full h-full opacity-[0.035]"
         style={{
           backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)",
           backgroundSize: "30px 30px",
-          height: "100%",
         }}
       />
 

@@ -7,6 +7,7 @@ import {
 } from "@/lib/services/result.service"
 import PublishButton from "@/components/portal/PublishButton"
 import SubmitDraftsButton from "@/components/portal/SubmitDraftsButton"
+import DownloadResultButton from "@/components/portal/DownloadResultButton"
 
 export default async function ResultsPage() {
   const session = await auth()
@@ -73,9 +74,20 @@ async function AdminResultView() {
                   </span>
                 </td>
                 <td className="px-6 py-4 text-right">
-                  {sheet.status === "SUBMITTED" && (
-                    <PublishButton resultSheetId={sheet.id} />
-                  )}
+                  <div className="flex items-center justify-end gap-3">
+                    {sheet.status === "PUBLISHED" && (
+                      <DownloadResultButton 
+                        studentId={sheet.studentId}
+                        sessionId={sheet.sessionId}
+                        termId={sheet.termId}
+                        studentName={sheet.student.name}
+                        variant="secondary"
+                      />
+                    )}
+                    {sheet.status === "SUBMITTED" && (
+                      <PublishButton resultSheetId={sheet.id} />
+                    )}
+                  </div>
                 </td>
               </tr>
             ))
@@ -131,17 +143,30 @@ async function TeacherResultView({ userId }: { userId: string }) {
                   <td className="px-6 py-4 font-medium text-zinc-900">{sheet.student.name}</td>
                   <td className="px-6 py-4 text-center">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${
-                      sheet.status === "DRAFT" ? "bg-amber-100 text-amber-800" : "bg-zinc-100 text-zinc-800"
+                      sheet.status === "DRAFT" ? "bg-amber-100 text-amber-800" : 
+                      sheet.status === "PUBLISHED" ? "bg-green-100 text-green-800" :
+                      "bg-zinc-100 text-zinc-800"
                     }`}>
                       {sheet.status}
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right">
-                    {sheet.status === "DRAFT" ? (
-                      <button className="text-eddyrose-light font-medium hover:underline">Edit Scores</button>
-                    ) : (
-                      <span className="text-zinc-400">Locked</span>
-                    )}
+                    <div className="flex items-center justify-end gap-3">
+                      {sheet.status === "PUBLISHED" && (
+                        <DownloadResultButton 
+                          studentId={sheet.studentId}
+                          sessionId={sheet.sessionId}
+                          termId={sheet.termId}
+                          studentName={sheet.student.name}
+                          variant="secondary"
+                        />
+                      )}
+                      {sheet.status === "DRAFT" ? (
+                        <button className="text-eddyrose-light font-medium hover:underline">Edit Scores</button>
+                      ) : (
+                        sheet.status !== "PUBLISHED" && <span className="text-zinc-400 text-xs">Awaiting Admin</span>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))
@@ -170,12 +195,16 @@ async function ParentResultView({ userId }: { userId: string }) {
           <div key={sheet.id} className="bg-white p-6 rounded-2xl shadow-sm border border-zinc-200 hover:shadow-md transition-shadow">
             <h3 className="text-lg font-bold text-zinc-900">{sheet.student.name}</h3>
             <p className="text-sm text-zinc-500 mb-4">{sheet.class.name}</p>
-            <button className="w-full bg-zinc-100 text-zinc-900 border border-zinc-200 py-2.5 rounded-lg font-semibold hover:bg-zinc-200 transition-colors">
-              View Detailed Report Card
-            </button>
+            <DownloadResultButton 
+              studentId={sheet.studentId}
+              sessionId={sheet.sessionId}
+              termId={sheet.termId}
+              studentName={sheet.student.name}
+            />
           </div>
         ))
       )}
     </div>
   )
 }
+

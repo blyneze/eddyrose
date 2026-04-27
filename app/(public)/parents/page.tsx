@@ -1,6 +1,7 @@
 "use client";
 
 import PageLayout from "@/components/public/PageLayout";
+import Image from "next/image";
 
 const SIDEBAR_LINKS = [
   { label: "Latest News", href: "/parents" },
@@ -8,6 +9,25 @@ const SIDEBAR_LINKS = [
   { label: "School Timings", href: "/parents/timings" },
   { label: "Uniform", href: "/parents/uniform" },
   { label: "Canteen", href: "/parents/canteen" },
+];
+
+const ANNOUNCEMENTS = [
+  {
+    id: 1,
+    title: "Upcoming Inter-House Sports Competition",
+    date: "OCTOBER 21, 2026",
+    description:
+      "Get ready for a day of teamwork, athletics, and school spirit! All houses are invited to participate in our annual sports day.",
+    image: "/inter.jpg",
+  },
+  {
+    id: 2,
+    title: "Mid-Term Break Notice",
+    date: "OCTOBER 23, 2026",
+    description:
+      "Please take note of the upcoming mid-term break dates and ensure all school projects are submitted on time.",
+    image: "/s2.jpg",
+  },
 ];
 
 export default function ParentsPage() {
@@ -22,23 +42,27 @@ export default function ParentsPage() {
       <div className="space-y-12">
         <section>
           <div className="space-y-8">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="group cursor-pointer">
-                <div className="aspect-video bg-zinc-100 rounded-[2rem] overflow-hidden mb-6 relative border border-zinc-100">
-                  <div className="absolute top-6 left-6 bg-eddyrose-gold text-eddyrose-deep text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">
+            {ANNOUNCEMENTS.map((announcement) => (
+              <div key={announcement.id} className="group cursor-pointer">
+                <div className="aspect-video bg-zinc-100 rounded-[1rem] overflow-hidden mb-6 relative border border-zinc-100">
+                  <Image
+                    src={announcement.image}
+                    alt={announcement.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-4 left-4 bg-eddyrose-gold text-eddyrose-deep text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest z-10">
                     ANNOUNCEMENT
                   </div>
                 </div>
-                <p className="text-zinc-400 text-xs font-bold mb-2">OCTOBER {20 + i}, 2023</p>
+                <p className="text-zinc-400 text-xs font-bold mb-2">
+                  {announcement.date}
+                </p>
                 <h3 className="text-2xl font-black text-eddyrose-deep group-hover:text-eddyrose-gold transition-colors mb-3">
-                  {i === 1 ? "Upcoming Inter-House Sports Competition" : i === 2 ? "New STEAM Lab Inauguration" : "Mid-Term Break Notice"}
+                  {announcement.title}
                 </h3>
                 <p className="text-zinc-500 line-clamp-2">
-                  {i === 1 
-                    ? "Get ready for a day of teamwork, athletics, and school spirit! All houses are invited to participate in our annual sports day."
-                    : i === 2 
-                    ? "We are excited to announce the opening of our state-of-the-art STEAM lab, providing new opportunities for innovation."
-                    : "Please take note of the upcoming mid-term break dates and ensure all school projects are submitted on time."}
+                  {announcement.description}
                 </p>
               </div>
             ))}

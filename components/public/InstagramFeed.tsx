@@ -22,108 +22,99 @@ const InstagramIcon = ({ className }: { className?: string }) => (
 const INSTA_POSTS = [
   {
     id: 1,
-    src: "/insta-1.png",
+    src: "/i1.jpg",
+    url: "https://www.instagram.com/reel/DXoNzKhjuGL/?utm_source=ig_web_copy_link&igsh=NTc4MTIwNjQ2YQ==",
     caption:
-      "Back where we belong! Learning to thread, tie a knot, and sew the first letter of our names in STEAM today.",
+      "We are raising balanced children 😌, Spiritually grounded, morally sound, and academically excellent ❤️",
   },
   {
     id: 2,
-    src: "/insta-2.png",
+    src: "/i2.jpg",
+    url: "https://www.instagram.com/reel/DXguTOMkTjC/?utm_source=ig_web_copy_link&igsh=NTc4MTIwNjQ2YQ==",
     caption:
-      "Story time with Dr. Maria Lee. The library is buzzing with excitement as we dive into 'The Lost Lamb'.",
+      "We’re a special school because we go all out to give our kids what we didn’t have… and even better",
   },
   {
     id: 3,
-    src: "/insta-3.png",
-    caption:
-      "Capturing the pure joy of discovery. Our students are natural explorers!",
+    src: "/i3.jpg",
+    url: "https://www.instagram.com/reel/DVghjeeiBRO/",
+    caption: `A tie?! That meant only one thing… a tie-breaker! 🔥
+
+Team Ivory stepped up for the first-to-get-it-right challenge, and the atmosphere was filled with suspense.
+Quick thinking, confidence, and brilliant young minds on display!`,
   },
   {
     id: 4,
-    src: "/insta-4.png",
-    caption:
-      "Art and Design afternoon. Expressing ourselves through color and creativity.",
-  },
-  {
-    id: 5,
-    src: "/insta-5.png",
-    caption:
-      "Our assembly mornings are filled with song, community, and character building.",
-  },
-  {
-    id: 6,
-    src: "/insta-6.png",
-    caption:
-      "Outdoor play is just as important as indoor learning. Building social skills in the fresh air.",
-  },
-  {
-    id: 7,
-    src: "/insta-6.png",
-    caption:
-      "Outdoor play is just as important as indoor learning. Building social skills in the fresh air.",
-  },
-  {
-    id: 8,
-    src: "/insta-6.png",
-    caption:
-      "Outdoor play is just as important as indoor learning. Building social skills in the fresh air.",
+    src: "/i4.jpg",
+    url: "https://www.instagram.com/reel/DVa6hk-iPno/",
+    caption: `Our kids stepped into the spotlight like they owned it 🔥✨
+Meet our contestants!`,
   },
 ];
 
 export default function InstagramFeed() {
   return (
-    <section className="bg- py-12 md:py-24 px-6">
+    <section className="bg-white py-16 px-6 md:px-[5%]">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
-        <div className="flex flex-row items-center justify-between gap-4 md:gap-6 mb-12">
-          <div className="flex flex-col gap-1 md:gap-2">
-            <h2 className="text-lg md:text-5xl font-black text-eddyrose-deep">
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-3 mb-10">
+          <div className="flex flex-col gap-1">
+            <motion.span
+              initial={{ opacity: 1, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-eddyrose-gold font-bold text-xs tracking-widest uppercase mb-1"
+            >
+              @EDDYROSEACADEMY
+            </motion.span>
+            <h2 className="text-3xl md:text-4xl font-black text-eddyrose-deep tracking-tight">
               #BelongAtEddyrose
             </h2>
-            <p className="text-zinc-500 text-xs md:text-lg font-medium text-left md:text-center md:text-left">
-              See daily life at Eddyrose Academy on Instagram
+            <p className="text-zinc-500 text-sm md:text-base font-medium max-w-lg">
+              Follow our journey of growth and discovery. See daily life at
+              Eddyrose Academy on Instagram.
             </p>
           </div>
 
           <a
-            href="https://instagram.com"
+            href="https://www.instagram.com/eddyroseacademy/"
             target="_blank"
             rel="noopener noreferrer"
-            className="border border-eddyrose-deep/30 text-eddyrose-deep px-3 md:px-6 py-2 rounded-lg font-bold text-[10px] md:text-sm hover:bg-eddyrose-deep hover:text-white transition-all flex items-center gap-2"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-eddyrose-deep text-white rounded-[0.7rem] font-bold text-xs tracking-widest hover:bg-eddyrose-gold transition-colors duration-300"
           >
-            @EDDYROSEACADEMY <span className="hidden md:flex text-lg">→</span>
+            FOLLOW US
           </a>
         </div>
 
         {/* Grid Section */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {INSTA_POSTS.map((post) => (
-            <motion.div
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-4">
+          {INSTA_POSTS.map((post, index) => (
+            <motion.a
               key={post.id}
-              initial={{ opacity: 0.01, scale: 0.98 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, amount: 0 }}
-              style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}
-              className="relative aspect-square overflow-hidden group cursor-pointer"
+              href={post.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 1, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              className="relative aspect-square overflow-hidden group rounded-xl md:rounded-2xl shadow-sm border border-zinc-100"
             >
               <Image
                 src={post.src}
                 alt="Instagram post"
                 fill
-                className="object-cover transition-transform duration-500 group-hover:scale-110"
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
 
               {/* Hover Overlay */}
-              <div className="absolute inset-0 bg-eddyrose-deep/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-6 text-center">
-                <InstagramIcon className="text-white mb-4 w-8 h-8" />
-                <span className="text-white font-bold text-xs mb-3 tracking-widest">
-                  @EDDYROSEACADEMY
-                </span>
-                <p className="text-white/80 text-xs leading-relaxed line-clamp-4">
+              <div className="absolute inset-0 bg-eddyrose-deep/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 md:p-6 text-center">
+                <InstagramIcon className="text-white mb-3 w-6 h-6 md:w-8 md:h-8" />
+                <p className="text-white/90 text-[10px] md:text-xs leading-relaxed line-clamp-4 md:line-clamp-6 font-medium">
                   {post.caption}
                 </p>
               </div>
-            </motion.div>
+            </motion.a>
           ))}
         </div>
       </div>

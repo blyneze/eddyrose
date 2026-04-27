@@ -58,8 +58,8 @@ const NAV_COLS = [
     heading: "School",
     links: [
       { label: "About Us", href: "/about" },
-      { label: "Our Mission", href: "/about#mission" },
-      { label: "Leadership", href: "/about#team" },
+      { label: "Mission & Vision", href: "/about/mission" },
+      { label: "Our Director", href: "/about/director" },
       { label: "Gallery", href: "/gallery" },
       { label: "News & Events", href: "/news" },
     ],
@@ -67,20 +67,17 @@ const NAV_COLS = [
   {
     heading: "Academics",
     links: [
-      { label: "Programmes", href: "/academics" },
-      { label: "Curriculum", href: "/academics#curriculum" },
+      { label: "Our Curriculum", href: "/academics" },
+      { label: "Campus & Facilities", href: "/academics#facilities" },
       { label: "Extracurriculars", href: "/academics#extra" },
-      { label: "Results", href: "/academics#results" },
-      { label: "Library", href: "/academics#library" },
     ],
   },
   {
     heading: "Admissions",
     links: [
-      { label: "How to Apply", href: "/admissions" },
-      { label: "Requirements", href: "/admissions#requirements" },
-      { label: "School Fees", href: "/admissions#fees" },
-      { label: "Scholarships", href: "/admissions#scholarships" },
+      { label: "Admissions Process", href: "/admissions" },
+      { label: "Book a Tour", href: "/admissions/book-tour" },
+      { label: "Apply Now", href: "/admissions/apply" },
       { label: "FAQs", href: "/admissions#faq" },
     ],
   },
@@ -186,7 +183,7 @@ export default function Footer() {
                       href={href}
                       className="group inline-flex items-center gap-1.5 text-[13px] font-medium text-white transition-colors duration-150 hover:text-white/80"
                     >
-                      <span className="w-0 overflow-hidden group-hover:w-3 transition-all duration-200 opacity-0 group-hover:opacity-100">
+                      <span className="w-0 overflow-hidden group-hover:w-3 transition-all duration-200 opacity-100">
                         <ArrowRight
                           size={10}
                           className="text-eddyrose-gold flex-shrink-0"
@@ -202,31 +199,31 @@ export default function Footer() {
         </div>
 
         {/* ── Newsletter bar ── */}
-        <div className="rounded-2xl border border-white/8 bg-white/[0.04] px-6 sm:px-8 py-6 mb-8 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+        <div className="rounded-[1.5rem] md:rounded-2xl border border-white/8 bg-white/[0.04] p-6 sm:p-8 mb-12 flex flex-col md:flex-row md:items-center gap-6 md:gap-8">
           <div className="flex-1 min-w-0">
-            <p className="text-white/80 font-bold text-[14px] mb-0.5">
+            <h4 className="text-white text-lg md:text-xl font-bold mb-1">
               Stay in the loop
-            </p>
-            <p className="text-white/40 text-[12.5px]">
-              Get school updates, events, and news delivered to your inbox.
+            </h4>
+            <p className="text-white/50 text-sm max-w-md">
+              Get school updates, events, and news delivered directly to your
+              inbox.
             </p>
           </div>
-          <div className="flex items-center gap-2 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
             <input
               type="email"
               placeholder="Your email address"
-              className="flex-1 sm:w-56 rounded-xl border border-white/12 bg-white/8 px-4 py-2.5 text-[13px] text-white placeholder-white/30 outline-none focus:border-eddyrose-gold/50 focus:bg-white/10 transition-all"
+              className="flex-1 md:w-64 lg:w-80 rounded-[0.8rem] md:rounded-xl border border-white/12 bg-white/5 px-5 py-3.5 md:py-3 text-sm text-white placeholder-white/30 outline-none focus:border-eddyrose-gold/50 focus:bg-white/10 transition-all"
             />
-            <button className="flex-shrink-0 inline-flex items-center gap-2 rounded-xl bg-eddyrose-gold text-eddyrose-deep font-bold text-[13px] px-5 py-2.5 shadow-md transition-all duration-200 hover:bg-white hover:text-eddyrose-deep hover:shadow-lg active:scale-[0.97]">
-              Subscribe
-              <ArrowRight size={13} />
+            <button className="flex-shrink-0 inline-flex items-center justify-center gap-2 rounded-[0.8rem] md:rounded-xl bg-eddyrose-gold text-eddyrose-deep font-extrabold text-[13px] md:text-sm px-8 py-3.5 md:py-3 shadow-lg shadow-eddyrose-gold/10 transition-all duration-300 hover:bg-white hover:text-eddyrose-deep active:scale-[0.97]">
+              SUBSCRIBE <ArrowRight size={16} />
             </button>
           </div>
         </div>
 
         {/* ── Bottom bar ── */}
         <div className="border-t border-white/8 py-6 flex flex-col w-full justify-center text-center md:flex-row md:items-center md:justify-between gap-3">
-          <p className="text-white/30 text-[12px]">
+          <p className="text-white/30 text-[10px]">
             © {new Date().getFullYear()} Eddyrose International Academy. All
             rights reserved.
           </p>
@@ -234,7 +231,7 @@ export default function Footer() {
             {[
               { label: "Privacy Policy", href: "/privacy" },
               { label: "Terms of Use", href: "/terms" },
-              { label: "Safeguarding", href: "/safeguarding" },
+              { label: "Safeguarding", href: "/about/safeguarding" },
             ].map(({ label, href }) => (
               <Link
                 key={label}

@@ -40,7 +40,7 @@ export default function MissionVision() {
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 items-center gap-16 md:gap-24">
           {/* Left: Image with Organic Mask */}
           <motion.div
-            initial={{ opacity: 0.01, scale: 0.9 }}
+            initial={{ opacity: 1, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, amount: 0 }}
             style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}
@@ -65,7 +65,7 @@ export default function MissionVision() {
           {/* Right: Text */}
           <div className="flex flex-col gap-8">
             <motion.div
-            initial={{ opacity: 0.01, x: 15 }}
+            initial={{ opacity: 1, x: 15 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0 }}
             style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}
@@ -103,7 +103,7 @@ export default function MissionVision() {
           {/* Left: Text & Values List */}
           <div className="flex flex-col gap-8 order-2 lg:order-1">
             <motion.div
-            initial={{ opacity: 0.01, x: -15 }}
+            initial={{ opacity: 1, x: -15 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0 }}
             style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}
@@ -117,7 +117,7 @@ export default function MissionVision() {
                 {VALUES.map((val, i) => (
                   <motion.div 
                     key={i}
-                    initial={{ opacity: 0.01, y: 10 }}
+                    initial={{ opacity: 1, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0 }}
                     style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}
@@ -139,7 +139,7 @@ export default function MissionVision() {
 
           {/* Right: Image with Organic Mask */}
           <motion.div
-            initial={{ opacity: 0.01, scale: 0.9 }}
+            initial={{ opacity: 1, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, amount: 0 }}
             style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}

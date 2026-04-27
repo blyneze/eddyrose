@@ -31,16 +31,16 @@ export default function ApplyPage() {
             admissions team. You can contact us via WhatsApp, call our
             admissions line directly, or send us an email.
           </p>
-          <div className="flex flex-col gap-4 max-w-2xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl">
             <a
               href="https://wa.me/2347045762841?text=Hi%20Eddyrose%20Academy%2C%20I%20would%20like%20to%20start%20an%20application"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-white p-6 rounded-[1.5rem] border border-zinc-100 flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6 hover:border-eddyrose-gold hover:shadow-xl transition-all group shadow-sm"
+              className="bg-white p-4 rounded-[1rem] border border-zinc-100 flex flex-row items-start sm:items-center gap-2 hover:border-eddyrose-gold hover:shadow-xl transition-all shadow-sm"
             >
-              <div className="w-14 h-14 rounded-full bg-eddyrose-deep/5 text-eddyrose-deep flex items-center justify-center shrink-0 group-hover:bg-eddyrose-deep group-hover:text-eddyrose-gold transition-all duration-300">
+              <div className="w-10 h-10 rounded-full bg-eddyrose-deep/5 text-eddyrose-deep flex items-center justify-center shrink-0">
                 <svg
-                  className="w-7 h-7"
+                  className="w-5 h-5"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -48,40 +48,42 @@ export default function ApplyPage() {
                 </svg>
               </div>
               <div>
-                <h4 className="text-xl font-bold text-eddyrose-deep mb-1 group-hover:text-eddyrose-gold transition-colors duration-300">
+                <h4 className="text-base font-bold text-eddyrose-deep">
                   WhatsApp
                 </h4>
-                <p className="text-zinc-500 text-sm sm:text-base">Message our admissions team directly</p>
+                <p className="text-zinc-500 text-sm">
+                  Message our admissions team directly
+                </p>
               </div>
             </a>
 
             <a
               href="tel:+2347045762841"
-              className="bg-white p-6 rounded-[1.5rem] border border-zinc-100 flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6 hover:border-eddyrose-gold hover:shadow-xl transition-all group shadow-sm"
+              className="bg-white p-4 rounded-[1rem] border border-zinc-100 flex flex-row items-start sm:items-center gap-2 hover:border-eddyrose-gold hover:shadow-xl transition-all shadow-sm"
             >
-              <div className="w-14 h-14 rounded-full bg-eddyrose-deep/5 text-eddyrose-deep flex items-center justify-center shrink-0 group-hover:bg-eddyrose-deep group-hover:text-eddyrose-gold transition-all duration-300">
-                <PhoneCall className="w-7 h-7" />
+              <div className="w-10 h-10 rounded-full bg-eddyrose-deep/5 text-eddyrose-deep flex items-center justify-center shrink-0">
+                <PhoneCall className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="text-xl font-bold text-eddyrose-deep mb-1 group-hover:text-eddyrose-gold transition-colors duration-300">
+                <h4 className="text-base font-bold text-eddyrose-deep">
                   Call Us
                 </h4>
-                <p className="text-zinc-500 text-sm sm:text-base">+234 704 576 2841</p>
+                <p className="text-zinc-500 text-sm">+234 704 576 2841</p>
               </div>
             </a>
 
             <a
               href="mailto:eddyroseintlacademy@gmail.com"
-              className="bg-white p-6 rounded-[1.5rem] border border-zinc-100 flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6 hover:border-eddyrose-gold hover:shadow-xl transition-all group shadow-sm"
+              className="bg-white p-4 rounded-[1rem] border border-zinc-100 flex flex-row items-start sm:items-center gap-2 hover:border-eddyrose-gold hover:shadow-xl transition-all shadow-sm md:col-span-2"
             >
-              <div className="w-14 h-14 rounded-full bg-eddyrose-deep/5 text-eddyrose-deep flex items-center justify-center shrink-0 group-hover:bg-eddyrose-deep group-hover:text-eddyrose-gold transition-all duration-300">
-                <Mail className="w-7 h-7" />
+              <div className="w-10 h-10 rounded-full bg-eddyrose-deep/5 text-eddyrose-deep flex items-center justify-center shrink-0">
+                <Mail className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="text-xl font-bold text-eddyrose-deep mb-1 group-hover:text-eddyrose-gold transition-colors duration-300">
+                <h4 className="text-base font-bold text-eddyrose-deep">
                   Email
                 </h4>
-                <p className="text-zinc-500 text-sm sm:text-base break-all">
+                <p className="text-zinc-500 text-sm break-all">
                   eddyroseintlacademy@gmail.com
                 </p>
               </div>

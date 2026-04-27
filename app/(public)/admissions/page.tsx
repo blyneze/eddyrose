@@ -34,69 +34,69 @@ export default function AdmissionsPage() {
           </p>
 
           <div className="space-y-10">
-            <div className="flex gap-6">
-              <div className="w-10 h-10 rounded-full border-2 border-eddyrose-gold flex items-center justify-center font-bold text-eddyrose-gold shrink-0">
+            <div className="flex gap-4">
+              <div className="w-8 h-8 rounded-full border-2 border-eddyrose-gold flex items-center justify-center font-bold text-eddyrose-gold shrink-0">
                 1
               </div>
               <div>
-                <h4 className="font-bold text-xl text-eddyrose-deep mb-2 flex flex-col items-start gap-1">
+                <h4 className="font-bold text-lg md:text-xl text-eddyrose-deep mb-1 flex flex-col items-start gap-1">
                   Submit Your Application
-                  <span className="text-zinc-400 font-normal text-lg">
+                  <span className="text-zinc-400 font-normal text-sm md:text-base">
                     Visit us in person to pick up the admissions form.
                   </span>
                 </h4>
               </div>
             </div>
-            <div className="flex gap-6">
-              <div className="w-10 h-10 rounded-full border-2 border-eddyrose-gold flex items-center justify-center font-bold text-eddyrose-gold shrink-0">
+            <div className="flex gap-4">
+              <div className="w-8 h-8 rounded-full border-2 border-eddyrose-gold flex items-center justify-center font-bold text-eddyrose-gold shrink-0">
                 2
               </div>
               <div>
-                <h4 className="font-bold text-xl text-eddyrose-deep mb-2 flex flex-col items-start gap-1">
+                <h4 className="font-bold text-lg md:text-xl text-eddyrose-deep mb-1 flex flex-col items-start gap-1">
                   Provide Documentation
-                  <span className="text-zinc-400 font-normal text-lg">
+                  <span className="text-zinc-400 font-normal text-sm md:text-base">
                     Ensure you have copies of your child’s birth certificate and
                     last school report ready.
                   </span>
                 </h4>
               </div>
             </div>
-            <div className="flex gap-6">
-              <div className="w-10 h-10 rounded-full border-2 border-eddyrose-gold flex items-center justify-center font-bold text-eddyrose-gold shrink-0">
+            <div className="flex gap-4">
+              <div className="w-8 h-8 rounded-full border-2 border-eddyrose-gold flex items-center justify-center font-bold text-eddyrose-gold shrink-0">
                 3
               </div>
               <div>
-                <h4 className="font-bold text-xl text-eddyrose-deep mb-2 flex flex-col items-start gap-1">
+                <h4 className="font-bold text-lg md:text-xl text-eddyrose-deep mb-1 flex flex-col items-start gap-1">
                   Pay the Application Fee
-                  <span className="text-zinc-400 font-normal text-lg">
+                  <span className="text-zinc-400 font-normal text-sm md:text-base">
                     A non-refundable fee covers administrative and assessment
                     costs.
                   </span>
                 </h4>
               </div>
             </div>
-            <div className="flex gap-6">
-              <div className="w-10 h-10 rounded-full border-2 border-eddyrose-gold flex items-center justify-center font-bold text-eddyrose-gold shrink-0">
+            <div className="flex gap-4">
+              <div className="w-8 h-8 rounded-full border-2 border-eddyrose-gold flex items-center justify-center font-bold text-eddyrose-gold shrink-0">
                 4
               </div>
               <div>
-                <h4 className="font-bold text-xl text-eddyrose-deep mb-2 flex flex-col items-start gap-1">
+                <h4 className="font-bold text-lg md:text-xl text-eddyrose-deep mb-1 flex flex-col items-start gap-1">
                   Schedule an Assessment
-                  <span className="text-zinc-400 font-normal text-lg">
+                  <span className="text-zinc-400 font-normal text-sm md:text-base">
                     We&apos;ll invite your child for an age-appropriate
                     interaction.
                   </span>
                 </h4>
               </div>
             </div>
-            <div className="flex gap-6">
-              <div className="w-10 h-10 rounded-full border-2 border-eddyrose-gold flex items-center justify-center font-bold text-eddyrose-gold shrink-0">
+            <div className="flex gap-4">
+              <div className="w-8 h-8 rounded-full border-2 border-eddyrose-gold flex items-center justify-center font-bold text-eddyrose-gold shrink-0">
                 5
               </div>
               <div>
-                <h4 className="font-bold text-xl text-eddyrose-deep mb-2 flex flex-col items-start gap-1">
+                <h4 className="font-bold text-lg md:text-xl text-eddyrose-deep mb-1 flex flex-col items-start gap-1">
                   Offer & Enrollment
-                  <span className="text-zinc-400 font-normal text-lg">
+                  <span className="text-zinc-400 font-normal text-sm md:text-base">
                     Upon successful assessment, an official offer will be made.
                   </span>
                 </h4>

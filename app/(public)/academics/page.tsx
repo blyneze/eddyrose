@@ -71,9 +71,9 @@ export default function AcademicsPage() {
           </h2>
           <p>
             Learning doesn't stop when the bell rings. Our extracurricular
-            programme includes sports, music, debate, chess, arts and crafts and
-            various interest-based clubs that allow students to explore their
-            passions.
+            programme includes sports, coding, mental maths, mega maths,
+            scrabble, chess and various interest-based clubs that allow students
+            to explore their passions.
           </p>
         </section>
       </div>

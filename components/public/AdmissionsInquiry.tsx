@@ -66,7 +66,7 @@ export default function AdmissionsInquiry() {
   };
 
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 1 },
     show: {
       opacity: 1,
       transition: { staggerChildren: 0.1, delayChildren: 0.1 },
@@ -74,7 +74,7 @@ export default function AdmissionsInquiry() {
   };
 
   const itemVariants = {
-    hidden: { opacity: 0.01, y: 15 },
+    hidden: { opacity: 1, y: 15 },
     show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE } },
   };
 

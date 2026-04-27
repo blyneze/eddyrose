@@ -66,7 +66,7 @@ export default function SafeguardingPage() {
             </p>
             <div className="grid gap-4">
               <div className="p-5 bg-zinc-50 rounded-xl border border-zinc-100">
-                <p className="font-black text-eddyrose-deep">Ediomo Emmanuel</p>
+                <p className="font-black text-eddyrose-deep">Ediomi Emmanuel</p>
                 <p className="text-xs font-bold text-eddyrose-gold uppercase tracking-widest mt-1">
                   Director & Designated Safeguarding Lead (DSL)
                 </p>

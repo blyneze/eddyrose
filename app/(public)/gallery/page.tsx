@@ -4,7 +4,8 @@ import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "School Gallery | Eddyrose International Academy",
-  description: "Explore life at Eddyrose International Academy through our gallery of events, classroom activities, and school facilities.",
+  description:
+    "Explore life at Eddyrose International Academy through our gallery of events, classroom activities, and school facilities.",
 };
 
 const GALLERY_IMAGES = [
@@ -60,7 +61,8 @@ export default function GalleryPage() {
             Our School Gallery
           </h1>
           <p className="text-white/70 max-w-2xl mx-auto text-lg leading-relaxed">
-            A visual glimpse into the daily life, activities, and vibrant atmosphere at Eddyrose International Academy.
+            A visual glimpse into the daily life, activities, and vibrant
+            atmosphere at Eddyrose International Academy.
           </p>
         </div>
       </section>
@@ -68,20 +70,25 @@ export default function GalleryPage() {
       {/* Gallery Grid */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
-            {["All", "Learning", "Classroom", "Events", "Facilities"].map((cat) => (
-              <button
-                key={cat}
-                className="px-6 py-2 rounded-full border border-zinc-200 text-zinc-600 font-medium hover:bg-eddyrose-deep hover:text-white hover:border-eddyrose-deep transition-all"
-              >
-                {cat}
-              </button>
-            ))}
+          <div className="flex flex-wrap items-center justify-center gap-1 md:gap-2 mb-12">
+            {["All", "Learning", "Classroom", "Events", "Facilities"].map(
+              (cat) => (
+                <button
+                  key={cat}
+                  className="px-3 md:px-6 py-1.5  md:py-2 rounded-[1rem] border border-zinc-200 text-zinc-600 font-medium hover:bg-eddyrose-deep hover:text-white hover:border-eddyrose-deep transition-all"
+                >
+                  {cat}
+                </button>
+              ),
+            )}
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
             {GALLERY_IMAGES.map((img, i) => (
-              <div key={i} className="group relative aspect-square overflow-hidden rounded-3xl bg-zinc-100 shadow-sm hover:shadow-xl transition-all duration-500">
+              <div
+                key={i}
+                className="group relative aspect-square overflow-hidden rounded-[1rem] bg-zinc-100 shadow-sm hover:shadow-xl transition-all duration-500"
+              >
                 <img
                   src={img.url}
                   alt={img.caption}
@@ -96,15 +103,18 @@ export default function GalleryPage() {
               </div>
             ))}
           </div>
-          
+
           <div className="mt-20 text-center bg-zinc-50 rounded-[3rem] p-12 border border-zinc-100">
-             <div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-6 text-eddyrose-deep">
-               <Camera size={28} />
-             </div>
-             <h3 className="text-2xl font-bold text-zinc-900 mb-4">Capturing Moments</h3>
-             <p className="text-zinc-500 max-w-xl mx-auto mb-8">
-               We regularly update our gallery with new photos from competitions, academic milestones, and school celebrations. Stay tuned for more!
-             </p>
+            <div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-6 text-eddyrose-deep">
+              <Camera size={28} />
+            </div>
+            <h3 className="text-2xl font-bold text-zinc-900 mb-4">
+              Capturing Moments
+            </h3>
+            <p className="text-zinc-500 max-w-xl mx-auto mb-8">
+              We regularly update our gallery with new photos from competitions,
+              academic milestones, and school celebrations. Stay tuned for more!
+            </p>
           </div>
         </div>
       </section>

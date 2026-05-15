@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Eddyrose International Academy — Portal
+
+Welcome to the Eddyrose Academy portal monorepo. This repository contains the code for both the user-facing website/dashboard and the backend API server.
+
+## Project Structure
+
+The codebase is organized into two completely separate applications:
+
+- **/frontend** — A Next.js application handling the public website and the secure portal dashboard.
+- **/backend** — An Express.js REST API handling the database (Prisma, PostgreSQL), PDF generation, and core business logic.
+
+## Prerequisites
+
+- Node.js v20+
+- A PostgreSQL database (e.g. Neon, Supabase, or local)
 
 ## Getting Started
 
-First, run the development server:
+### 1. Installation
+
+From the root directory, install the dependencies for both applications:
+
+```bash
+npm run install:all
+```
+
+### 2. Environment Variables
+
+Create `.env` files in both the `frontend` and `backend` directories using the provided examples:
+
+- `frontend/.env.example` -> `frontend/.env`
+- `backend/.env.example` -> `backend/.env`
+
+Ensure that the `INTERNAL_API_SECRET` matches exactly in both `.env` files. This is how the frontend securely communicates with the backend.
+
+### 3. Database Setup (Backend)
+
+The backend handles the database. Run the following commands inside the `/backend` directory:
+
+```bash
+cd backend
+npm run db:generate  # Generates the Prisma client
+npm run db:push      # Pushes the schema to your database
+npm run db:seed      # Seeds the database with default Superadmin and data
+```
+
+### 4. Running Locally
+
+You can run both the frontend and backend concurrently from the root directory:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This will start:
+- **Frontend**: http://localhost:3000
+- **Backend**: http://localhost:4000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deployment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Both applications can be deployed independently.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Backend**: Deploy the `/backend` folder to a service like Render or Heroku. Make sure to set the build and start scripts as defined in `backend/package.json`.
+- **Frontend**: Deploy the `/frontend` folder to Vercel or Netlify. Set `BACKEND_URL` to your live backend URL.

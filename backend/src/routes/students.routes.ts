@@ -22,7 +22,7 @@ router.get('/children', requireRole('PARENT'), async (req, res) => {
 
 /** GET /api/students/:id — get student details (SUPERADMIN only) */
 router.get('/:id', requireRole('SUPERADMIN'), async (req, res) => {
-  const student = await getStudentById(req.params.id)
+  const student = await getStudentById(req.params.id as string)
   if (!student) { res.status(404).json({ error: 'Student not found.' }); return }
   res.json(student)
 })
@@ -54,7 +54,7 @@ router.put('/:id', requireRole('SUPERADMIN'), async (req, res) => {
     return
   }
   try {
-    const student = await updateStudent(req.params.id, parsed.data)
+    const student = await updateStudent(req.params.id as string, parsed.data)
     res.json(student)
   } catch (err: any) {
     if (err.message?.includes('already exists')) {

@@ -23,9 +23,9 @@ async function main() {
 
   // 2. Class
   const nurseryClass = await prisma.class.upsert({
-    where: { name: "Nursery One" },
+    where: { level_name: { level: "Nursery", name: "Nursery One" } },
     update: {},
-    create: { name: "Nursery One", orderIndex: 1 },
+    create: { level: "Nursery", name: "Nursery One", orderIndex: 1 },
   })
 
   console.log("✅ Class 'Nursery One' created.")

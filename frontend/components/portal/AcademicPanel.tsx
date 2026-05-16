@@ -112,92 +112,111 @@ export default function AcademicPanel({
               </form>
             </div>
 
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {classes.map(cls => (
-                <div key={cls.id} className="border border-zinc-200 rounded-xl p-6 bg-white">
-                  <div className="flex justify-between items-start mb-4">
-                    <h4 className="text-lg font-bold text-zinc-900">{cls.name}</h4>
-                    <span className="text-xs font-semibold text-zinc-500 bg-zinc-100 px-2.5 py-1 rounded-full">
-                      {cls._count.enrollments} Students
+                <div key={cls.id} className="group bg-white border border-zinc-200 rounded-[1.5rem] p-5 sm:p-6 hover:shadow-xl hover:shadow-zinc-200/50 transition-all hover:-translate-y-1">
+                  <div className="flex justify-between items-start mb-6">
+                    <div>
+                      <h4 className="text-lg font-black text-zinc-900 tracking-tight">{cls.name}</h4>
+                      <div className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest mt-0.5">{cls.level || "Primary Level"}</div>
+                    </div>
+                    <span className="text-[10px] font-black text-zinc-500 bg-zinc-100 px-3 py-1.5 rounded-full uppercase tracking-tighter">
+                      {cls._count?.enrollments || 0} Students
                     </span>
                   </div>
                   
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div className="space-y-6">
                     {/* Teacher Assignments */}
                     <div className="space-y-3">
-                      <div className="text-xs font-bold text-zinc-400 uppercase tracking-wide border-b border-zinc-100 pb-2">Assigned Teachers</div>
-                      <div className="flex flex-wrap gap-2">
-                        {cls.teacherAssigns.length === 0 ? <span className="text-sm text-zinc-400 italic">None</span> : 
+                      <div className="text-[10px] font-black text-zinc-400 uppercase tracking-widest flex items-center gap-2">
+                        <Users size={12} /> Assigned Teachers
+                      </div>
+                      <div className="flex flex-wrap gap-1.5 min-h-[1.5rem]">
+                        {cls.teacherAssigns.length === 0 ? <span className="text-xs text-zinc-400 italic">No teachers assigned</span> : 
                           cls.teacherAssigns.map((ta: any) => (
-                            <span key={ta.id} className="inline-flex items-center px-2 py-1 bg-blue-50 text-blue-700 text-xs font-semibold rounded">
-                              <Users size={12} className="mr-1" />
+                            <span key={ta.id} className="inline-flex items-center px-2 py-1 bg-eddyrose-light/10 text-eddyrose-deep text-[11px] font-bold rounded-lg border border-eddyrose-light/20">
                               {ta.teacherProfile.user.name}
                             </span>
                           ))
                         }
                       </div>
-                      <form action={handleCreate(assignTeacherAction)} className="flex gap-2 mt-2">
+                      <form action={handleCreate(assignTeacherAction)} className="flex gap-2 pt-1">
                         <input type="hidden" name="classId" value={cls.id} />
-                        <select required name="teacherId" className="flex-1 text-sm border border-zinc-200 rounded px-2 py-1.5 focus:outline-none focus:border-eddyrose-deep">
+                        <select required name="teacherId" className="flex-1 text-xs border border-zinc-200 rounded-xl px-3 py-2 bg-zinc-50 focus:outline-none focus:border-eddyrose-light focus:bg-white transition-all font-medium">
                           <option value="">Select Teacher...</option>
                           {teachers.map(t => (
                             <option key={t.id} value={t.teacherProfile.id}>{t.name}</option>
                           ))}
                         </select>
-                        <button disabled={isPending} type="submit" className="bg-zinc-100 hover:bg-zinc-200 text-zinc-700 px-3 py-1.5 rounded text-xs font-bold transition-colors">Assign</button>
+                        <button disabled={isPending} type="submit" className="bg-zinc-900 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-eddyrose-light transition-all disabled:opacity-50">Assign</button>
                       </form>
                     </div>
 
                     {/* Subject Linking */}
-                    <div className="space-y-3">
-                      <div className="text-xs font-bold text-zinc-400 uppercase tracking-wide border-b border-zinc-100 pb-2">Class Subjects</div>
-                      <div className="flex flex-wrap gap-2">
-                        {cls.subjects.length === 0 ? <span className="text-sm text-zinc-400 italic">None</span> : 
+                    <div className="space-y-3 pt-2 border-t border-zinc-50">
+                      <div className="text-[10px] font-black text-zinc-400 uppercase tracking-widest flex items-center gap-2">
+                        <BookOpen size={12} /> Class Subjects
+                      </div>
+                      <div className="flex flex-wrap gap-1.5 min-h-[1.5rem]">
+                        {cls.subjects.length === 0 ? <span className="text-xs text-zinc-400 italic">No subjects linked</span> : 
                           cls.subjects.map((cs: any) => (
-                            <span key={cs.id} className="inline-flex items-center px-2 py-1 bg-purple-50 text-purple-700 text-xs font-semibold rounded">
+                            <span key={cs.id} className="inline-flex items-center px-2 py-1 bg-zinc-100 text-zinc-600 text-[11px] font-bold rounded-lg border border-zinc-200">
                               {cs.subject.name}
                             </span>
                           ))
                         }
                       </div>
-                      <form action={handleCreate(linkSubjectToClassAction)} className="flex gap-2 mt-2">
+                      <form action={handleCreate(linkSubjectToClassAction)} className="flex gap-2 pt-1">
                         <input type="hidden" name="classId" value={cls.id} />
-                        <select required name="subjectId" className="flex-1 text-sm border border-zinc-200 rounded px-2 py-1.5 focus:outline-none focus:border-eddyrose-deep">
+                        <select required name="subjectId" className="flex-1 text-xs border border-zinc-200 rounded-xl px-3 py-2 bg-zinc-50 focus:outline-none focus:border-eddyrose-light focus:bg-white transition-all font-medium">
                           <option value="">Add Subject...</option>
                           {subjects.map(s => (
                             <option key={s.id} value={s.id}>{s.name}</option>
                           ))}
                         </select>
-                        <button disabled={isPending} type="submit" className="bg-zinc-100 hover:bg-zinc-200 text-zinc-700 px-3 py-1.5 rounded text-xs font-bold transition-colors">Add</button>
+                        <button disabled={isPending} type="submit" className="bg-zinc-900 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-eddyrose-light transition-all disabled:opacity-50">Add</button>
                       </form>
                     </div>
                   </div>
                 </div>
               ))}
-              {classes.length === 0 && <p className="text-center text-zinc-400 py-8">No classes created yet.</p>}
+              {classes.length === 0 && <p className="col-span-full text-center text-zinc-400 py-12 font-medium italic">No classes have been created yet.</p>}
             </div>
           </div>
         )}
 
         {tab === "sessions" && (
-          <div className="space-y-6">
-            <div className="bg-zinc-50 p-6 rounded-xl border border-zinc-200">
-              <h3 className="text-sm font-bold text-zinc-800 mb-4 uppercase tracking-wide">Create New Session</h3>
-              <form ref={formRef} action={handleCreate(createSessionAction)} className="flex gap-3">
-                <input required name="name" type="text" placeholder="e.g. 2024/2025" className="flex-1 bg-white border border-zinc-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-eddyrose-deep" />
-                <button disabled={isPending} type="submit" className="bg-eddyrose-deep text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-eddyrose-light flex items-center gap-2 disabled:opacity-60">
-                  {isPending ? <Loader2 size={16} className="animate-spin" /> : <Plus size={16} />} Create Session
+          <div className="space-y-8">
+            <div className="bg-zinc-50 p-4 sm:p-6 rounded-[1.5rem] border border-zinc-200">
+              <h3 className="text-[10px] font-black text-zinc-400 mb-4 uppercase tracking-widest">Create New Academic Session</h3>
+              <form ref={formRef} action={handleCreate(createSessionAction)} className="flex flex-col sm:flex-row gap-3">
+                <input required name="name" type="text" placeholder="e.g. 2024/2025" className="flex-1 bg-white border border-zinc-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-eddyrose-light font-medium" />
+                <button disabled={isPending} type="submit" className="bg-eddyrose-deep text-white px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-eddyrose-light flex items-center justify-center gap-2 disabled:opacity-60 transition-all whitespace-nowrap">
+                  {isPending ? <Loader2 size={16} className="animate-spin" /> : <Plus size={16} />} Create
                 </button>
               </form>
             </div>
-            <div className="divide-y divide-zinc-100 border border-zinc-200 rounded-xl overflow-hidden">
+            <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-4">
               {sessions.map(s => (
-                <div key={s.id} className="p-4 flex items-center justify-between hover:bg-zinc-50">
-                  <span className="font-medium text-zinc-900">{s.name}</span>
+                <div key={s.id} className="p-5 border border-zinc-200 rounded-[1.5rem] flex flex-col gap-4 bg-white hover:border-eddyrose-light transition-all group">
+                  <div className="flex items-center justify-between">
+                    <span className="font-black text-zinc-900 tracking-tight truncate mr-2">{s.name}</span>
+                    {s.isCurrent && (
+                      <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.5)] shrink-0" />
+                    )}
+                  </div>
                   {s.isCurrent ? (
-                    <span className="inline-flex items-center gap-1 text-xs font-bold text-green-700 bg-green-50 px-2.5 py-1 rounded-full"><CheckCircle size={14} /> Active Session</span>
+                    <div className="text-[10px] font-black text-green-600 bg-green-50 px-3 py-1.5 rounded-full uppercase tracking-widest text-center truncate">
+                      Active Session
+                    </div>
                   ) : (
-                    <button disabled={isPending} onClick={() => handleSetCurrent(s.id, "SESSION")} className="text-xs font-bold text-eddyrose-light hover:underline">Set as Active</button>
+                    <button 
+                      disabled={isPending} 
+                      onClick={() => handleSetCurrent(s.id, "SESSION")} 
+                      className="text-[10px] font-black text-zinc-400 hover:text-eddyrose-deep hover:bg-zinc-50 px-3 py-1.5 rounded-full uppercase tracking-widest border border-zinc-100 transition-all truncate"
+                    >
+                      Set as Active
+                    </button>
                   )}
                 </div>
               ))}
@@ -206,24 +225,37 @@ export default function AcademicPanel({
         )}
 
         {tab === "terms" && (
-          <div className="space-y-6">
-            <div className="bg-zinc-50 p-6 rounded-xl border border-zinc-200">
-              <h3 className="text-sm font-bold text-zinc-800 mb-4 uppercase tracking-wide">Create New Term</h3>
-              <form ref={formRef} action={handleCreate(createTermAction)} className="flex gap-3">
-                <input required name="name" type="text" placeholder="e.g. First Term" className="flex-1 bg-white border border-zinc-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-eddyrose-deep" />
-                <button disabled={isPending} type="submit" className="bg-eddyrose-deep text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-eddyrose-light flex items-center gap-2 disabled:opacity-60">
-                  {isPending ? <Loader2 size={16} className="animate-spin" /> : <Plus size={16} />} Create Term
+          <div className="space-y-8">
+            <div className="bg-zinc-50 p-4 sm:p-6 rounded-[1.5rem] border border-zinc-200">
+              <h3 className="text-[10px] font-black text-zinc-400 mb-4 uppercase tracking-widest">Create New Academic Term</h3>
+              <form ref={formRef} action={handleCreate(createTermAction)} className="flex flex-col sm:flex-row gap-3">
+                <input required name="name" type="text" placeholder="e.g. First Term" className="flex-1 bg-white border border-zinc-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-eddyrose-light font-medium" />
+                <button disabled={isPending} type="submit" className="bg-eddyrose-deep text-white px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-eddyrose-light flex items-center justify-center gap-2 disabled:opacity-60 transition-all whitespace-nowrap">
+                  {isPending ? <Loader2 size={16} className="animate-spin" /> : <Plus size={16} />} Create
                 </button>
               </form>
             </div>
-            <div className="divide-y divide-zinc-100 border border-zinc-200 rounded-xl overflow-hidden">
+            <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-4">
               {terms.map(t => (
-                <div key={t.id} className="p-4 flex items-center justify-between hover:bg-zinc-50">
-                  <span className="font-medium text-zinc-900">{t.name}</span>
+                <div key={t.id} className="p-5 border border-zinc-200 rounded-[1.5rem] flex flex-col gap-4 bg-white hover:border-eddyrose-light transition-all group">
+                  <div className="flex items-center justify-between">
+                    <span className="font-black text-zinc-900 tracking-tight truncate mr-2">{t.name}</span>
+                    {t.isCurrent && (
+                      <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.5)] shrink-0" />
+                    )}
+                  </div>
                   {t.isCurrent ? (
-                    <span className="inline-flex items-center gap-1 text-xs font-bold text-green-700 bg-green-50 px-2.5 py-1 rounded-full"><CheckCircle size={14} /> Active Term</span>
+                    <div className="text-[10px] font-black text-green-600 bg-green-50 px-3 py-1.5 rounded-full uppercase tracking-widest text-center truncate">
+                      Active Term
+                    </div>
                   ) : (
-                    <button disabled={isPending} onClick={() => handleSetCurrent(t.id, "TERM")} className="text-xs font-bold text-eddyrose-light hover:underline">Set as Active</button>
+                    <button 
+                      disabled={isPending} 
+                      onClick={() => handleSetCurrent(t.id, "TERM")} 
+                      className="text-[10px] font-black text-zinc-400 hover:text-eddyrose-deep hover:bg-zinc-50 px-3 py-1.5 rounded-full uppercase tracking-widest border border-zinc-100 transition-all truncate"
+                    >
+                      Set as Active
+                    </button>
                   )}
                 </div>
               ))}
@@ -232,20 +264,20 @@ export default function AcademicPanel({
         )}
 
         {tab === "subjects" && (
-          <div className="space-y-6">
-            <div className="bg-zinc-50 p-6 rounded-xl border border-zinc-200">
-              <h3 className="text-sm font-bold text-zinc-800 mb-4 uppercase tracking-wide">Add Subject to Global Directory</h3>
-              <form ref={formRef} action={handleCreate(createSubjectAction)} className="flex gap-3">
-                <input required name="name" type="text" placeholder="e.g. Mathematics" className="flex-1 bg-white border border-zinc-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-eddyrose-deep" />
-                <button disabled={isPending} type="submit" className="bg-eddyrose-deep text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-eddyrose-light flex items-center gap-2 disabled:opacity-60">
+          <div className="space-y-8">
+            <div className="bg-zinc-50 p-4 sm:p-6 rounded-[1.5rem] border border-zinc-200">
+              <h3 className="text-[10px] font-black text-zinc-400 mb-4 uppercase tracking-widest">Add Subject to Global Directory</h3>
+              <form ref={formRef} action={handleCreate(createSubjectAction)} className="flex flex-col sm:flex-row gap-3">
+                <input required name="name" type="text" placeholder="e.g. Mathematics" className="flex-1 bg-white border border-zinc-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-eddyrose-light font-medium" />
+                <button disabled={isPending} type="submit" className="bg-eddyrose-deep text-white px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-eddyrose-light flex items-center justify-center gap-2 disabled:opacity-60 transition-all whitespace-nowrap">
                   {isPending ? <Loader2 size={16} className="animate-spin" /> : <Plus size={16} />} Add Subject
                 </button>
               </form>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
               {subjects.map(s => (
-                <div key={s.id} className="p-4 border border-zinc-200 rounded-xl text-center font-medium text-zinc-800 bg-white">
-                  {s.name}
+                <div key={s.id} className="p-4 sm:p-5 border border-zinc-200 rounded-[1.5rem] text-center bg-white hover:border-eddyrose-light transition-all group flex flex-col items-center justify-center min-h-[80px]">
+                  <span className="text-[10px] sm:text-xs font-black text-zinc-900 tracking-tight truncate w-full">{s.name}</span>
                 </div>
               ))}
             </div>

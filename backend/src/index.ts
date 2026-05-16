@@ -1,4 +1,12 @@
 import express from 'express'
+// Load environment variables from .env file (Node 20.6+)
+try {
+  // @ts-ignore
+  if (typeof process.loadEnvFile === 'function') process.loadEnvFile()
+} catch (e) {
+  // .env might not exist in some environments, ignore
+}
+
 import helmet from 'helmet'
 import cors from 'cors'
 

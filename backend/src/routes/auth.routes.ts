@@ -18,7 +18,8 @@ router.post('/verify', requireApiSecret, async (req, res) => {
     return
   }
 
-  const { loginId, password } = parsed.data
+  const { loginId: rawLoginId, password } = parsed.data
+  const loginId = rawLoginId.trim()
 
   // Rate limit: 5 login attempts per 15 minutes per loginId
   const limited = await rateLimit(loginId, 'login', 5, 15 * 60 * 1000)

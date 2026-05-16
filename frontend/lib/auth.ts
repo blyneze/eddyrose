@@ -48,6 +48,7 @@ export const authOptions: NextAuthOptions = {
             role: user.role as "SUPERADMIN" | "TEACHER" | "PARENT",
           }
         } catch (err: any) {
+          console.error("Authentication error from backend:", err.message)
           // Surface rate-limit errors to the login form
           if (err.message?.includes("Too many")) throw err
           return null

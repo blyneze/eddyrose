@@ -35,13 +35,30 @@ async function main() {
   })
   console.log("Term seeded:", term.name)
 
-  // Seed basic class
-  const cls = await prisma.class.upsert({
-    where: { name: 'Grade 1' },
-    update: {},
-    create: { name: 'Grade 1', orderIndex: 1 }
-  })
-  console.log("Class seeded:", cls.name)
+  // Clear existing classes
+  await prisma.class.deleteMany({})
+  console.log("Existing classes cleared")
+
+  // Seed classes
+  const classes = [
+    { level: 'Transition', name: 'Buttercups', orderIndex: 1 },
+    { level: 'Pre-Nursery', name: 'Hawthorn', orderIndex: 2 },
+    { level: 'Nursery 1', name: 'Bluebell', orderIndex: 3 },
+    { level: 'Grade 1', name: 'Aster', orderIndex: 4 },
+    { level: 'Grade 2', name: 'Dahlia', orderIndex: 5 },
+    { level: 'Grade 3', name: 'Saffron', orderIndex: 6 },
+    { level: 'Grade 4', name: 'Ivory', orderIndex: 7 },
+    { level: 'Grade 5', name: 'Hawthorn', orderIndex: 8 },
+  ]
+
+  for (const c of classes) {
+    await prisma.class.upsert({
+      where: { level_name: { level: c.level, name: c.name } },
+      update: { orderIndex: c.orderIndex },
+      create: c,
+    })
+  }
+  console.log("Classes seeded")
 
   // Seed basic subjects
   const math = await prisma.subject.upsert({

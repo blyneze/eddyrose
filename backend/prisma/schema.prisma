@@ -62,6 +62,12 @@ model Student {
   id                 String   @id @default(cuid())
   name               String
   registrationNumber String   @unique
+  image              String?
+  dateOfBirth        DateTime?
+  parentName         String?
+  religion           String?
+  contactNumber      String?
+  address            String?
   sex                String?  // e.g. "Male", "Female"
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
@@ -99,13 +105,16 @@ model Term {
 
 model Class {
   id              String   @id @default(cuid())
-  name            String   @unique // e.g. "Transition", "Reception", "Grade 1"
+  level           String?  // e.g. "Transition", "Grade 1"
+  name            String   // e.g. "Buttercups", "Aster"
   orderIndex      Int      @default(0) // Used for sorting
   
   enrollments     StudentEnrollment[]
   teacherAssigns  TeacherClassAssignment[]
   resultSheets    ResultSheet[]
   subjects        ClassSubject[]
+
+  @@unique([level, name], name: "level_name")
 }
 
 // Global subject catalog
@@ -173,7 +182,7 @@ model ResultSheet {
   student   Student      @relation(fields: [studentId], references: [id])
   session   Session      @relation(fields: [sessionId], references: [id])
   term      Term         @relation(fields: [termId], references: [id])
-  class     Class        @relation(fields: [classId], references: [id])
+  class     Class        @relation(fields: [classId], references: [id], onDelete: Cascade)
   
   entries   ResultEntry[]
 

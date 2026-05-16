@@ -59,7 +59,12 @@ async function AdminResultView({ user }: { user: any }) {
             resultSheets.map((sheet) => (
               <tr key={sheet.id} className="hover:bg-zinc-50/50 transition-colors">
                 <td className="px-6 py-4 font-medium text-zinc-900">{sheet.student.name}</td>
-                <td className="px-6 py-4 text-center">{sheet.class.name}</td>
+                <td className="px-6 py-4 text-center">
+                  <div className="flex flex-col">
+                    <span className="text-zinc-900 font-bold">{sheet.class.level}</span>
+                    <span className="text-[10px] text-zinc-500 uppercase tracking-wide font-medium">{sheet.class.name}</span>
+                  </div>
+                </td>
                 <td className="px-6 py-4 text-center">
                   <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${
                     sheet.status === "PUBLISHED" ? "bg-green-100 text-green-800" :
@@ -110,7 +115,7 @@ async function TeacherResultView({ user }: { user: any }) {
     )
   }
 
-  const hasDrafts = resultSheets.some((s) => s.status === "DRAFT")
+  const hasDrafts = resultSheets.some((s: any) => s.status === "DRAFT")
 
   return (
     <div className="space-y-6">
@@ -136,7 +141,7 @@ async function TeacherResultView({ user }: { user: any }) {
                 </td>
               </tr>
             ) : (
-              resultSheets.map((sheet) => (
+              resultSheets.map((sheet: any) => (
                 <tr key={sheet.id} className="hover:bg-zinc-50/50 transition-colors">
                   <td className="px-6 py-4 font-medium text-zinc-900">{sheet.student.name}</td>
                   <td className="px-6 py-4 text-center">

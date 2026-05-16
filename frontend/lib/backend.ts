@@ -103,8 +103,13 @@ export const backendUsers = {
 export const backendStudents = {
   list: (user: ActingUser) => apiFetch<any[]>('/api/students', {}, user),
 
-  create: (user: ActingUser, data: { name: string; registrationNumber: string }) =>
+  getById: (user: ActingUser, id: string) => apiFetch<any>(`/api/students/${id}`, {}, user),
+
+  create: (user: ActingUser, data: any) =>
     apiFetch<any>('/api/students', { method: 'POST', body: JSON.stringify(data) }, user),
+
+  update: (user: ActingUser, id: string, data: any) =>
+    apiFetch<any>(`/api/students/${id}`, { method: 'PUT', body: JSON.stringify(data) }, user),
 
   /** Returns the parent profile with linked children — for /portal/children */
   children: (user: ActingUser) => apiFetch<any>('/api/students/children', {}, user),

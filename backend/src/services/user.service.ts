@@ -1,5 +1,6 @@
 import prisma from '../lib/prisma'
 import bcrypt from 'bcryptjs'
+import { generateDefaultPassword } from '../lib/auth-utils'
 import { CreateUserInput } from '../validation/user.schema'
 
 const SAFE_USER_SELECT = {
@@ -19,19 +20,22 @@ export async function getUsers() {
 }
 
 export async function createUser(data: CreateUserInput) {
-  const hashedPassword = await bcrypt.hash(data.password, 10)
+  const defaultPassword = generateDefaultPassword()
+  const hashedPassword = await bcrypt.hash(defaultPassword, 10)
+  
   try {
-    return await prisma.user.create({
+    const user = await prisma.user.create({
       data: {
         name: data.name,
         loginId: data.loginId,
         password: hashedPassword,
         role: data.role,
         ...(data.role === 'TEACHER' ? { teacherProfile: { create: {} } } : {}),
-        ...(data.role === 'PARENT' ? { parentProfile: { create: {} } } : {}),
       },
       select: SAFE_USER_SELECT,
     })
+    
+    return { ...user, generatedPassword: defaultPassword }
   } catch (error: any) {
     if (error.code === 'P2002') throw new Error('A user with this Login ID already exists.')
     throw new Error('Failed to create user.')
@@ -73,6 +77,28 @@ export async function updateUserPassword(id: string, currentPassword: string, ne
   })
 }
 
+/** Administrative reset: Set a specific password */
+export async function resetUserPassword(id: string, newPassword: string) {
+  if (newPassword.length < 6) throw new Error('Password must be at least 6 characters.')
+  const hashed = await bcrypt.hash(newPassword, 10)
+  return prisma.user.update({
+    where: { id },
+    data: { password: hashed },
+    select: { id: true },
+  })
+}
+
+/** Administrative regeneration: Generate and return a new random password */
+export async function regenerateUserPassword(id: string) {
+  const newPassword = generateDefaultPassword()
+  const hashed = await bcrypt.hash(newPassword, 10)
+  await prisma.user.update({
+    where: { id },
+    data: { password: hashed },
+  })
+  return newPassword
+}
+
 /** Used by the auth route to verify credentials and return safe user fields. */
 export async function verifyCredentials(loginId: string, password: string) {
   const user = await prisma.user.findUnique({ where: { loginId } })
@@ -81,3 +107,4 @@ export async function verifyCredentials(loginId: string, password: string) {
   if (!match) return null
   return { id: user.id, name: user.name, role: user.role }
 }
+

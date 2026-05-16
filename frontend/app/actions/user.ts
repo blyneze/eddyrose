@@ -23,17 +23,28 @@ export async function createUserAction(formData: FormData) {
   const raw = {
     name: formData.get("name") as string,
     loginId: formData.get("loginId") as string,
-    password: formData.get("password") as string,
     role: formData.get("role") as string,
   };
 
-  const parsed = createUserSchema.safeParse(raw);
+  // Password is auto-generated in backend
+  const parsed = createUserSchema.partial({ password: true }).safeParse(raw);
   if (!parsed.success) {
     throw new Error(parsed.error.issues[0]?.message ?? "Invalid input.");
   }
 
-  await backendUsers.create(session.user, parsed.data);
+  const result = await backendUsers.create(session.user, parsed.data as any);
 
   revalidatePath("/portal/users");
-  redirect("/portal/users");
+  return result;
+}
+
+export async function regenerateUserPasswordAction(userId: string) {
+  const session = await auth();
+  if (session?.user?.role !== "SUPERADMIN") {
+    throw new Error("Unauthorized");
+  }
+
+  const newPassword = await backendUsers.regeneratePassword(session.user, userId);
+  revalidatePath("/portal/users");
+  return newPassword;
 }

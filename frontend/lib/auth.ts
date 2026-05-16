@@ -45,7 +45,7 @@ export const authOptions: NextAuthOptions = {
           return {
             id: user.id,
             name: user.name,
-            role: user.role as "SUPERADMIN" | "TEACHER" | "PARENT",
+            role: user.role as "SUPERADMIN" | "TEACHER" | "STUDENT",
           }
         } catch (err: any) {
           console.error("Authentication error from backend:", err.message)

@@ -1,5 +1,6 @@
 import prisma from '../lib/prisma'
-
+import bcrypt from 'bcryptjs'
+import { generateDefaultPassword } from '../lib/auth-utils'
 import { CreateStudentInput, UpdateStudentInput } from '../validation/student.schema'
 
 export async function getStudents() {
@@ -7,16 +8,8 @@ export async function getStudents() {
     orderBy: { name: 'asc' },
     take: 500,
     include: {
-      parents: {
-        include: {
-          parentProfile: {
-            include: {
-              user: {
-                select: { id: true, name: true, loginId: true, role: true },
-              },
-            },
-          },
-        },
+      user: {
+        select: { id: true, name: true, loginId: true, role: true },
       },
       enrollments: { include: { class: true } },
     },
@@ -27,6 +20,9 @@ export async function getStudentById(id: string) {
   return prisma.student.findUnique({
     where: { id },
     include: {
+      user: {
+        select: { id: true, name: true, loginId: true, role: true },
+      },
       enrollments: {
         where: { session: { isCurrent: true }, term: { isCurrent: true } },
         include: { class: true }
@@ -37,16 +33,31 @@ export async function getStudentById(id: string) {
 
 export async function createStudent(data: CreateStudentInput) {
   const { classId, ...studentData } = data
+  const defaultPassword = generateDefaultPassword()
+  const hashedPassword = await bcrypt.hash(defaultPassword, 10)
+
   try {
-    return await prisma.$transaction(async (tx: any) => {
+    const result = await prisma.$transaction(async (tx: any) => {
+      // 1. Create the User record for student login
+      const user = await tx.user.create({
+        data: {
+          loginId: studentData.registrationNumber, // Reg Number is the Login ID
+          password: hashedPassword,
+          role: 'STUDENT',
+          name: studentData.name,
+        }
+      })
+
+      // 2. Create the Student record linked to the User
       const student = await tx.student.create({
         data: {
           ...studentData,
+          userId: user.id,
           dateOfBirth: studentData.dateOfBirth ? new Date(studentData.dateOfBirth) : null,
         }
       })
 
-      // If classId is provided, also create an enrollment for the current session/term
+      // 3. Handle enrollment if classId is provided
       if (classId) {
         const currentSession = await tx.session.findFirst({ where: { isCurrent: true } })
         const currentTerm = await tx.term.findFirst({ where: { isCurrent: true } })
@@ -65,6 +76,9 @@ export async function createStudent(data: CreateStudentInput) {
 
       return student
     })
+
+    // Return the student data PLUS the plain text password so admin can show it
+    return { ...result, generatedPassword: defaultPassword }
   } catch (error: any) {
     if (error.code === 'P2002') throw new Error('A student with this Registration Number already exists.')
     throw new Error('Failed to create student.')
@@ -83,12 +97,20 @@ export async function updateStudent(id: string, data: UpdateStudentInput) {
         }
       })
 
+      // Sync the user's name and loginId (registration number)
+      await tx.user.update({
+        where: { id: student.userId },
+        data: {
+          name: studentData.name,
+          loginId: studentData.registrationNumber,
+        }
+      })
+
       if (classId) {
         const currentSession = await tx.session.findFirst({ where: { isCurrent: true } })
         const currentTerm = await tx.term.findFirst({ where: { isCurrent: true } })
         
         if (currentSession && currentTerm) {
-          // Update or create enrollment for the current term
           await tx.studentEnrollment.upsert({
             where: {
               studentId_sessionId_termId: {
@@ -116,20 +138,3 @@ export async function updateStudent(id: string, data: UpdateStudentInput) {
   }
 }
 
-/** Returns the parent's linked children with enrollments for the /portal/children page. */
-export async function getChildrenForParent(userId: string) {
-  return prisma.parentProfile.findUnique({
-    where: { userId },
-    include: {
-      students: {
-        include: {
-          student: {
-            include: {
-              enrollments: { include: { class: true } },
-            },
-          },
-        },
-      },
-    },
-  })
-}

@@ -41,9 +41,9 @@ export default function PortalLoginForm() {
   return (
     <div className="w-full max-w-md bg-white rounded-[1rem] p-8 md:p-12 shadow-[0_20px_60px_rgba(0,0,0,0.06)] border border-zinc-100">
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-zinc-900 mb-2">Portal Access</h2>
+        <h2 className="text-2xl font-black text-zinc-900 mb-2">Student & Teacher Portal</h2>
         <p className="text-sm text-zinc-500">
-          Please log in with your assigned credentials.
+          Enter your credentials to access your records.
         </p>
       </div>
 
@@ -56,8 +56,8 @@ export default function PortalLoginForm() {
 
       <form onSubmit={handleLogin} className="flex flex-col gap-5">
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold text-zinc-700 ml-1 uppercase tracking-wide">
-            Registration Number
+          <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">
+            Registration Number / Teacher ID
           </label>
           <input
             type="text"
@@ -65,22 +65,16 @@ export default function PortalLoginForm() {
             disabled={loading}
             value={loginId}
             onChange={(e) => setLoginId(e.target.value)}
-            className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 focus:outline-none focus:ring-2 focus:ring-eddyrose-deep/50 focus:border-eddyrose-deep focus:bg-white transition-all text-sm font-medium"
-            placeholder="e.g. ERA/2023/001"
+            className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-eddyrose-deep/20 focus:border-eddyrose-deep focus:bg-white transition-all text-sm font-bold"
+            placeholder="e.g. ERA/2024/001 or TCH-101"
           />
         </div>
 
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between ml-1">
-            <label className="text-xs font-bold text-zinc-700 uppercase tracking-wide">
-              Password / PIN
+            <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">
+              Access Password / PIN
             </label>
-            <button
-              type="button"
-              className="text-xs font-semibold text-eddyrose-gold hover:text-eddyrose-deep transition-colors"
-            >
-              Forgot details?
-            </button>
           </div>
           <div className="relative">
             <input
@@ -89,7 +83,7 @@ export default function PortalLoginForm() {
               disabled={loading}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 pr-12 focus:outline-none focus:ring-2 focus:ring-eddyrose-deep/50 focus:border-eddyrose-deep focus:bg-white transition-all font-medium"
+              className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-4 pr-12 focus:outline-none focus:ring-2 focus:ring-eddyrose-deep/20 focus:border-eddyrose-deep focus:bg-white transition-all text-sm font-bold"
               placeholder="••••••••"
             />
             <button
@@ -101,6 +95,7 @@ export default function PortalLoginForm() {
             </button>
           </div>
         </div>
+
 
         {/* Notice indicator */}
         <div className="bg-blue-50/50 border border-blue-100 p-4 rounded-xl flex items-start gap-3 mt-2">

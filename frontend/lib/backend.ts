@@ -97,6 +97,20 @@ export const backendUsers = {
       { method: 'POST', body: JSON.stringify({ currentPassword, newPassword }) },
       user
     ),
+
+  regeneratePassword: (user: ActingUser, userId: string) =>
+    apiFetch<{ generatedPassword: string }>(
+      `/api/users/${userId}/regenerate-password`,
+      { method: 'POST' },
+      user
+    ).then(res => res.generatedPassword),
+
+  resetPassword: (user: ActingUser, userId: string, newPassword: string) =>
+    apiFetch<any>(
+      `/api/users/${userId}/reset-password`,
+      { method: 'POST', body: JSON.stringify({ newPassword }) },
+      user
+    ),
 }
 
 // ─── Students ──────────────────────────────────────────────────────────────

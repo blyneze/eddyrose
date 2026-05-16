@@ -35,10 +35,9 @@ export async function createStudentAction(formData: FormData) {
     throw new Error(parsed.error.issues[0]?.message ?? "Invalid input.");
   }
 
-  await backendStudents.create(session.user, parsed.data);
-
+  const result = await backendStudents.create(session.user, parsed.data);
   revalidatePath("/portal/students");
-  redirect("/portal/students");
+  return result;
 }
 
 export async function updateStudentAction(id: string, formData: FormData) {

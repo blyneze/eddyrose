@@ -41,7 +41,9 @@ export default function PortalLoginForm() {
   return (
     <div className="w-full max-w-md bg-white rounded-[1rem] p-8 md:p-12 shadow-[0_20px_60px_rgba(0,0,0,0.06)] border border-zinc-100">
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-black text-zinc-900 mb-2">Student & Teacher Portal</h2>
+        <h2 className="text-2xl font-black text-zinc-900 mb-2">
+          Student & Teacher Portal
+        </h2>
         <p className="text-sm text-zinc-500">
           Enter your credentials to access your records.
         </p>
@@ -66,7 +68,7 @@ export default function PortalLoginForm() {
             value={loginId}
             onChange={(e) => setLoginId(e.target.value)}
             className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-eddyrose-deep/20 focus:border-eddyrose-deep focus:bg-white transition-all text-sm font-bold"
-            placeholder="e.g. ERA/2024/001 or TCH-101"
+            placeholder="Enter your username"
           />
         </div>
 
@@ -95,7 +97,6 @@ export default function PortalLoginForm() {
             </button>
           </div>
         </div>
-
 
         {/* Notice indicator */}
         <div className="bg-blue-50/50 border border-blue-100 p-4 rounded-xl flex items-start gap-3 mt-2">

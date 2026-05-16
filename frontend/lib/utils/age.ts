@@ -13,5 +13,5 @@ export function calculateAge(dob: string | Date | null | undefined): string | nu
     age--;
   }
   
-  return age >= 0 ? `${age} years old` : null;
+  return age >= 0 ? `${age}` : null;
 }

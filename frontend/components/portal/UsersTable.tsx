@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useMemo } from "react";
 import { Search, Plus, RefreshCw, Copy, CheckCircle2, X } from "lucide-react";
 import Link from "next/link";

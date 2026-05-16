@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useRef } from "react";
 import { Save, User, Camera, Calendar, Phone, MapPin, BookOpen, Heart, Briefcase, Copy, CheckCircle2, ArrowRight } from "lucide-react";
 import { calculateAge } from "@/lib/utils/age";
@@ -232,7 +234,29 @@ export default function StudentForm({ initialData, classes, action, buttonText =
           </div>
         </div>
 
-        {/* 6. Parent/Guardian Name */}
+        {/* 6. Gender (Required) */}
+        <div className="space-y-2">
+          <label className="text-sm font-bold text-zinc-700 uppercase tracking-wide ml-1 flex items-center gap-2">
+            <span className="text-zinc-400 text-[10px]">👤</span> Gender <span className="text-red-500">*</span>
+          </label>
+          <div className="flex gap-4">
+            {["Male", "Female"].map((option) => (
+              <label key={option} className="flex-1 flex items-center justify-center gap-2 bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 cursor-pointer hover:border-eddyrose-light transition-all has-[:checked]:bg-eddyrose-light/5 has-[:checked]:border-eddyrose-light has-[:checked]:text-eddyrose-deep">
+                <input 
+                  type="radio" 
+                  name="sex" 
+                  value={option} 
+                  required 
+                  defaultChecked={initialData?.sex === option}
+                  className="hidden" 
+                />
+                <span className="text-sm font-bold">{option}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* 7. Parent/Guardian Name */}
         <div className="space-y-2">
           <label className="text-sm font-bold text-zinc-700 uppercase tracking-wide ml-1 flex items-center gap-2">
             <Heart size={14} className="text-zinc-400" /> Parent/Guardian Name

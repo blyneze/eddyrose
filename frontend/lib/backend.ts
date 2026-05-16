@@ -10,7 +10,7 @@
  *   x-user-id and x-user-role headers so the backend can authorise correctly.
  */
 
-const BACKEND_URL = process.env.BACKEND_URL ?? 'http://localhost:4000'
+const BACKEND_URL = process.env.BACKEND_URL ?? 'https://eddyrose-backend.onrender.com'
 const API_SECRET = process.env.INTERNAL_API_SECRET ?? ''
 
 if (!API_SECRET && process.env.NODE_ENV === 'production') {

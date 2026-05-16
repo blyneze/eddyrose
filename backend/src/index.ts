@@ -32,7 +32,7 @@ app.use(helmet())
  * server actions (server-to-server). We restrict CORS to prevent browsers
  * from making direct requests even if someone discovers the URL.
  */
-const allowedOrigins = (process.env.FRONTEND_URL ?? 'http://localhost:3000')
+const allowedOrigins = (process.env.FRONTEND_URL ?? 'https://eddyrose.vercel.app')
   .split(',')
   .map((o) => o.trim())
 

@@ -1,7 +1,8 @@
 import { Router } from 'express'
 import { requireApiSecret, requireRole, getActingUser } from '../middleware/apiAuth'
-import { getStudents, getStudentById, createStudent, updateStudent, getChildrenForParent } from '../services/student.service'
+import { getStudents, getStudentById, createStudent, updateStudent } from '../services/student.service'
 import { createStudentSchema, updateStudentSchema } from '../validation/student.schema'
+import prisma from '../lib/prisma'
 
 const router = Router()
 router.use(requireApiSecret)
@@ -12,12 +13,15 @@ router.get('/', requireRole('SUPERADMIN'), async (_req, res) => {
   res.json(students)
 })
 
-/** GET /api/students/children — get parent's linked children (PARENT only) */
-router.get('/children', requireRole('PARENT'), async (req, res) => {
+/** GET /api/students/profile — get own profile (STUDENT only) */
+router.get('/profile', requireRole('STUDENT'), async (req, res) => {
   const actor = getActingUser(req)!
-  const parentProfile = await getChildrenForParent(actor.id)
-  if (!parentProfile) { res.status(404).json({ error: 'Parent profile not found.' }); return }
-  res.json(parentProfile)
+  const student = await prisma.student.findUnique({
+    where: { userId: actor.id },
+    include: { enrollments: { include: { class: true } } }
+  })
+  if (!student) { res.status(404).json({ error: 'Student profile not found.' }); return }
+  res.json(student)
 })
 
 /** GET /api/students/:id — get student details (SUPERADMIN only) */

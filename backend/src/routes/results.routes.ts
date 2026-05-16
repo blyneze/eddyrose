@@ -3,7 +3,7 @@ import { requireApiSecret, requireRole, getActingUser } from '../middleware/apiA
 import {
   getAdminResults,
   getTeacherResults,
-  getParentResults,
+  getStudentResults,
   publishResult,
   rejectResult,
   submitClassDrafts,
@@ -34,9 +34,9 @@ router.get('/teacher', requireRole('TEACHER'), async (req, res) => {
 })
 
 /** GET /api/results/parent */
-router.get('/parent', requireRole('PARENT'), async (req, res) => {
+router.get('/parent', requireRole('STUDENT'), async (req, res) => {
   const actor = getActingUser(req)!
-  const data = await getParentResults(actor.id)
+  const data = await getStudentResults(actor.id)
   res.json(data)
 })
 
@@ -142,11 +142,9 @@ router.get('/download/:studentId/:sessionId/:termId', async (req, res) => {
         })
         if (assignment) hasAccess = true
       }
-    } else if (actor.role === 'PARENT') {
-      const link = await prisma.parentStudentLink.findFirst({
-        where: { studentId, parentProfile: { userId: actor.id } },
-      })
-      if (link) hasAccess = true
+    } else if (actor.role === 'STUDENT') {
+      const student = await prisma.student.findUnique({ where: { userId: actor.id } })
+      if (student && student.id === studentId) hasAccess = true
     }
 
     if (!hasAccess) { res.status(403).json({ error: 'Forbidden.' }); return }

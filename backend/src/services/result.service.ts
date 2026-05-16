@@ -42,14 +42,14 @@ export async function getTeacherResults(userId: string) {
   return { teacher, assignedClass, resultSheets }
 }
 
-export async function getParentResults(userId: string) {
-  const parent = await prisma.parentProfile.findUnique({
+export async function getStudentResults(userId: string) {
+  const student = await prisma.student.findUnique({
     where: { userId },
-    include: { students: { include: { student: true } } },
   })
-  const studentIds = parent?.students.map((link: any) => link.studentId) ?? []
+  if (!student) return []
+
   return prisma.resultSheet.findMany({
-    where: { studentId: { in: studentIds }, status: 'PUBLISHED' },
+    where: { studentId: student.id, status: 'PUBLISHED' },
     select: {
       id: true,
       status: true,

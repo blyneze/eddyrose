@@ -106,14 +106,27 @@ async function main() {
 
   console.log(`✅ ${subjectNames.length} Subjects created and linked to class.`)
 
-  // 5. Student
+  // 5. Student User & Profile
+  const studentPassword = await bcrypt.hash("password123", 10)
+  const studentUser = await prisma.user.upsert({
+    where: { loginId: "EDDY/2026/001" },
+    update: { password: studentPassword },
+    create: {
+      loginId: "EDDY/2026/001",
+      password: studentPassword,
+      name: "Glory Olumachi Kelechi",
+      role: Role.STUDENT,
+    },
+  })
+
   const student = await prisma.student.upsert({
     where: { registrationNumber: "EDDY/2026/001" },
-    update: { sex: "Female" },
+    update: { sex: "Female", userId: studentUser.id },
     create: {
       name: "Glory Olumachi Kelechi",
       registrationNumber: "EDDY/2026/001",
       sex: "Female",
+      userId: studentUser.id,
     },
   })
 
@@ -135,41 +148,7 @@ async function main() {
     }
   })
 
-  console.log("✅ Student created and enrolled.")
-
-  // 6. Parent User
-  const parentUser = await prisma.user.upsert({
-    where: { loginId: "parent@test.com" },
-    update: { password: hashedPassword },
-    create: {
-      loginId: "parent@test.com",
-      password: hashedPassword,
-      name: "Mr./Mrs. Kelechi",
-      role: Role.PARENT,
-    },
-  })
-
-  const parentProfile = await prisma.parentProfile.upsert({
-    where: { userId: parentUser.id },
-    update: {},
-    create: { userId: parentUser.id },
-  })
-
-  await prisma.parentStudentLink.upsert({
-    where: {
-      parentProfileId_studentId: {
-        parentProfileId: parentProfile.id,
-        studentId: student.id,
-      }
-    },
-    update: {},
-    create: {
-      parentProfileId: parentProfile.id,
-      studentId: student.id,
-    }
-  })
-
-  console.log("✅ Parent created and linked to student.")
+  console.log("✅ Student (and User account) created and enrolled.")
 
   // 7. Result Sheet (Simulate Teacher Upload)
   const resultSheet = await prisma.resultSheet.upsert({
@@ -261,9 +240,9 @@ async function main() {
   console.log("📊 TEST FLOW SETUP COMPLETE")
   console.log("------------------------------------------------")
   console.log("Teacher Login:   teacher@test.com / password123")
-  console.log("Parent Login:    parent@test.com  / password123")
+  console.log("Student/Parent:  EDDY/2026/001  / password123")
   console.log("Admin Login:     admin@eddyrose.com / password123")
-  console.log("Student:         Glory Olumachi Kelechi (EDDY/2026/001)")
+  console.log("Student Name:    Glory Olumachi Kelechi")
   console.log("------------------------------------------------\n")
 }
 

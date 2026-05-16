@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Lock, HelpCircle, AlertCircle } from "lucide-react";
+import { Lock, HelpCircle, AlertCircle, Eye, EyeOff } from "lucide-react";
 
 export default function PortalLoginForm() {
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -81,15 +82,24 @@ export default function PortalLoginForm() {
               Forgot details?
             </button>
           </div>
-          <input
-            type="password"
-            required
-            disabled={loading}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 focus:outline-none focus:ring-2 focus:ring-eddyrose-deep/50 focus:border-eddyrose-deep focus:bg-white transition-all font-medium"
-            placeholder="••••••••"
-          />
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              required
+              disabled={loading}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 pr-12 focus:outline-none focus:ring-2 focus:ring-eddyrose-deep/50 focus:border-eddyrose-deep focus:bg-white transition-all font-medium"
+              placeholder="••••••••"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors p-1"
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
         </div>
 
         {/* Notice indicator */}

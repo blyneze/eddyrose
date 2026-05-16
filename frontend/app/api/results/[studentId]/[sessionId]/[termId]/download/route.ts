@@ -29,7 +29,7 @@ export async function GET(
 
     // Pass through the exact headers (Content-Type, Content-Disposition, etc.)
     const headers = new Headers()
-    backendResponse.headers.forEach((value, key) => {
+    backendResponse.headers.forEach((value: string, key: string) => {
       headers.set(key, value)
     })
 

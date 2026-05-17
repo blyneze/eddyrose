@@ -26,7 +26,7 @@ export default function CurriculumGrid() {
         {/* Top Right: Image */}
         <div className="relative aspect-video md:aspect-auto md:min-h-[450px] overflow-hidden">
           <Image
-            src="/academics-hero.png"
+            src="/bcur.jpg"
             alt="Learning at Eddyrose"
             fill
             className="object-cover"

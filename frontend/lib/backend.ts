@@ -10,7 +10,7 @@
  *   x-user-id and x-user-role headers so the backend can authorise correctly.
  */
 
-const BACKEND_URL = process.env.BACKEND_URL ?? 'https://eddyrose-backend.onrender.com'
+const BACKEND_URL = (process.env.BACKEND_URL ?? 'https://eddyrose-backend.onrender.com').replace('localhost', '127.0.0.1')
 const API_SECRET = process.env.INTERNAL_API_SECRET ?? ''
 
 if (!API_SECRET && process.env.NODE_ENV === 'production') {
@@ -125,6 +125,9 @@ export const backendStudents = {
   update: (user: ActingUser, id: string, data: any) =>
     apiFetch<any>(`/api/students/${id}`, { method: 'PUT', body: JSON.stringify(data) }, user),
 
+  delete: (user: ActingUser, id: string) =>
+    apiFetch<any>(`/api/students/${id}`, { method: 'DELETE' }, user),
+
   /** Returns the parent profile with linked children — for /portal/children */
   children: (user: ActingUser) => apiFetch<any>('/api/students/children', {}, user),
 }
@@ -146,8 +149,8 @@ export const backendResults = {
   reject: (user: ActingUser, id: string, feedback: string) =>
     apiFetch<any>(`/api/results/${id}/reject`, { method: 'POST', body: JSON.stringify({ feedback }) }, user),
 
-  updateScores: (user: ActingUser, id: string, scores: Record<string, { test: number | null; exam: number | null }>) =>
-    apiFetch<any>(`/api/results/${id}/scores`, { method: 'PUT', body: JSON.stringify({ scores }) }, user),
+  updateScores: (user: ActingUser, id: string, scores: Record<string, { test: number | null; exam: number | null }>, details?: any) =>
+    apiFetch<any>(`/api/results/${id}/scores`, { method: 'PUT', body: JSON.stringify({ scores, details }) }, user),
 
   submitClassDrafts: (user: ActingUser, classId: string) =>
     apiFetch<any>(`/api/results/class/${classId}/submit`, { method: 'POST' }, user),
@@ -163,10 +166,14 @@ export const backendAcademic = {
     apiFetch<any>('/api/academic/classes', { method: 'POST', body: JSON.stringify({ name }) }, user),
   createSession: (user: ActingUser, name: string) =>
     apiFetch<any>('/api/academic/sessions', { method: 'POST', body: JSON.stringify({ name }) }, user),
+  updateSession: (user: ActingUser, id: string, name: string) =>
+    apiFetch<any>(`/api/academic/sessions/${id}`, { method: 'PUT', body: JSON.stringify({ name }) }, user),
   createTerm: (user: ActingUser, name: string) =>
     apiFetch<any>('/api/academic/terms', { method: 'POST', body: JSON.stringify({ name }) }, user),
   createSubject: (user: ActingUser, name: string) =>
     apiFetch<any>('/api/academic/subjects', { method: 'POST', body: JSON.stringify({ name }) }, user),
+  deleteSubject: (user: ActingUser, id: string) =>
+    apiFetch<any>(`/api/academic/subjects/${id}`, { method: 'DELETE' }, user),
   setCurrent: (user: ActingUser, id: string, type: 'SESSION' | 'TERM') =>
     apiFetch<any>('/api/academic/set-current', { method: 'POST', body: JSON.stringify({ id, type }) }, user),
   assignTeacher: (user: ActingUser, classId: string, teacherProfileId: string) =>

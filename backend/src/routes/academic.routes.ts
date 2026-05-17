@@ -4,8 +4,10 @@ import {
   getFullAcademicData,
   createClass,
   createSession,
+  updateSession,
   createTerm,
   createSubject,
+  deleteSubject,
   setAsCurrent,
   assignTeacher,
   linkSubjectToClass,
@@ -43,6 +45,20 @@ router.post('/sessions', requireRole('SUPERADMIN'), async (req, res) => {
   } catch (err: any) {
     if (err.code === 'P2002') { res.status(409).json({ error: 'Session with this name already exists.' }); return }
     res.status(500).json({ error: 'Failed to create session.' })
+  }
+})
+
+/** PUT /api/academic/sessions/:id */
+router.put('/sessions/:id', requireRole('SUPERADMIN'), async (req, res) => {
+  const id = req.params.id as string
+  const { name } = req.body
+  if (!name?.trim()) { res.status(400).json({ error: 'Name is required.' }); return }
+  try {
+    const session = await updateSession(id, name.trim())
+    res.json(session)
+  } catch (err: any) {
+    if (err.code === 'P2002') { res.status(409).json({ error: 'Session with this name already exists.' }); return }
+    res.status(500).json({ error: 'Failed to update session.' })
   }
 })
 
@@ -116,6 +132,17 @@ router.post('/link-subject', requireRole('SUPERADMIN'), async (req, res) => {
   } catch (err: any) {
     if (err.code === 'P2002') { res.status(409).json({ error: 'Subject is already linked to this class.' }); return }
     res.status(500).json({ error: 'Failed to link subject.' })
+  }
+})
+
+/** DELETE /api/academic/subjects/:id */
+router.delete('/subjects/:id', requireRole('SUPERADMIN'), async (req, res) => {
+  const id = req.params.id as string
+  try {
+    await deleteSubject(id)
+    res.json({ success: true })
+  } catch (err: any) {
+    res.status(500).json({ error: 'Failed to delete subject.' })
   }
 })
 

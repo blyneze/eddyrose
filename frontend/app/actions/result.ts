@@ -44,14 +44,23 @@ export async function rejectResultAction(resultSheetId: string, feedback: string
   revalidatePath("/portal/results")
 }
 
-export async function updateScoresAction(resultSheetId: string, scores: Record<string, { test: number | null; exam: number | null }>) {
+export async function updateScoresAction(
+  resultSheetId: string,
+  scores: Record<string, { test: number | null; exam: number | null }>,
+  details?: {
+    teacherComment?: string | null
+    closingDate?: string | null
+    resumptionDate?: string | null
+    affectiveDomain?: Record<string, number> | null
+  }
+) {
   const session = await auth()
   if (session?.user?.role !== "TEACHER") throw new Error("Unauthorized")
 
   const parsedId = idSchema.safeParse(resultSheetId)
   if (!parsedId.success) throw new Error("Invalid ID.")
 
-  await backendResults.updateScores(session.user, parsedId.data, scores)
+  await backendResults.updateScores(session.user, parsedId.data, scores, details)
   
   revalidatePath(`/portal/results/edit/${parsedId.data}`)
   revalidatePath("/portal/results")

@@ -13,6 +13,7 @@ export default function UserForm({ action }: UserFormProps) {
   const [error, setError] = useState<string | null>(null);
   const [successData, setSuccessData] = useState<{ id: string; name: string; loginId: string; generatedPassword?: string } | null>(null);
   const [copied, setCopied] = useState(false);
+  const [role, setRole] = useState("TEACHER");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -123,6 +124,8 @@ export default function UserForm({ action }: UserFormProps) {
           <select 
             name="role"
             required
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
             disabled={loading}
             className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-eddyrose-light/20 focus:border-eddyrose-light transition-all text-sm font-medium disabled:opacity-50"
           >
@@ -145,6 +148,38 @@ export default function UserForm({ action }: UserFormProps) {
           />
           <p className="text-[10px] text-zinc-400 ml-1">A secure password will be generated automatically.</p>
         </div>
+
+        {role === "TEACHER" && (
+          <>
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-zinc-700 uppercase tracking-wide ml-1">
+                Teacher's Email Address
+              </label>
+              <input 
+                name="email"
+                type="email" 
+                required
+                disabled={loading}
+                placeholder="e.g. teacher.john@eddyrose.com"
+                className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-eddyrose-light/20 focus:border-eddyrose-light transition-all text-sm font-medium disabled:opacity-50"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-zinc-700 uppercase tracking-wide ml-1">
+                Teacher's Phone Number
+              </label>
+              <input 
+                name="phoneNumber"
+                type="tel" 
+                required
+                disabled={loading}
+                placeholder="e.g. +234 80 1234 5678"
+                className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-eddyrose-light/20 focus:border-eddyrose-light transition-all text-sm font-medium disabled:opacity-50"
+              />
+            </div>
+          </>
+        )}
       </div>
 
       <div className="pt-6 border-t border-zinc-100 flex justify-end">

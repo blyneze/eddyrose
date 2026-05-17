@@ -21,6 +21,9 @@ export default async function EditScoresPage({ params }: { params: Promise<{ id:
       examScore: e.examScore,
     }))
 
+    const closingDateStr = sheet.closingDate ? new Date(sheet.closingDate).toISOString().split('T')[0] : ""
+    const resumptionDateStr = sheet.resumptionDate ? new Date(sheet.resumptionDate).toISOString().split('T')[0] : ""
+
     return (
       <EditScoresClient
         resultSheetId={sheet.id}
@@ -29,6 +32,10 @@ export default async function EditScoresPage({ params }: { params: Promise<{ id:
         status={sheet.status}
         rejectionFeedback={sheet.rejectionFeedback}
         initialEntries={mappedEntries}
+        initialTeacherComment={sheet.teacherComment || ""}
+        initialClosingDate={closingDateStr}
+        initialResumptionDate={resumptionDateStr}
+        initialAffectiveDomain={sheet.affectiveDomain || {}}
       />
     )
   } catch (error) {

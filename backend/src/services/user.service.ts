@@ -19,7 +19,7 @@ export async function getUsers() {
   })
 }
 
-export async function createUser(data: CreateUserInput) {
+export async function createUser(data: CreateUserInput & { email?: string; phoneNumber?: string }) {
   const defaultPassword = generateDefaultPassword()
   const hashedPassword = await bcrypt.hash(defaultPassword, 10)
   
@@ -30,7 +30,16 @@ export async function createUser(data: CreateUserInput) {
         loginId: data.loginId,
         password: hashedPassword,
         role: data.role,
-        ...(data.role === 'TEACHER' ? { teacherProfile: { create: {} } } : {}),
+        ...(data.role === 'TEACHER'
+          ? {
+              teacherProfile: {
+                create: {
+                  email: data.email || null,
+                  phoneNumber: data.phoneNumber || null,
+                },
+              },
+            }
+          : {}),
       },
       select: SAFE_USER_SELECT,
     })

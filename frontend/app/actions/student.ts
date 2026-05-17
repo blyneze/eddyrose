@@ -68,3 +68,12 @@ export async function updateStudentAction(id: string, formData: FormData) {
   revalidatePath(`/portal/students/${id}`);
   redirect("/portal/students");
 }
+
+export async function deleteStudentAction(id: string) {
+  const session = await auth();
+  if (session?.user?.role !== "SUPERADMIN") throw new Error("Unauthorized");
+
+  await backendStudents.delete(session.user, id);
+
+  revalidatePath("/portal/students");
+}

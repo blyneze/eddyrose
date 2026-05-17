@@ -53,7 +53,7 @@ export async function createStudent(data: CreateStudentInput) {
         data: {
           ...studentData,
           userId: user.id,
-          dateOfBirth: studentData.dateOfBirth ? new Date(studentData.dateOfBirth) : null,
+          dateOfBirth: (studentData.dateOfBirth && studentData.dateOfBirth.trim() !== '') ? new Date(studentData.dateOfBirth) : null,
         }
       })
 
@@ -71,6 +71,30 @@ export async function createStudent(data: CreateStudentInput) {
               termId: currentTerm.id,
             }
           })
+
+          // Proactively create DRAFT ResultSheet and ResultEntries for all class subjects
+          const classSubjects = await tx.classSubject.findMany({
+            where: { classId }
+          })
+
+          const resultSheet = await tx.resultSheet.create({
+            data: {
+              studentId: student.id,
+              classId,
+              sessionId: currentSession.id,
+              termId: currentTerm.id,
+              status: 'DRAFT',
+            }
+          })
+
+          for (const cs of classSubjects) {
+            await tx.resultEntry.create({
+              data: {
+                resultSheetId: resultSheet.id,
+                classSubjectId: cs.id,
+              }
+            })
+          }
         }
       }
 
@@ -86,14 +110,19 @@ export async function createStudent(data: CreateStudentInput) {
 }
 
 export async function updateStudent(id: string, data: UpdateStudentInput) {
-  const { classId, ...studentData } = data
+  const { classId, dateOfBirth: rawDob, ...studentData } = data
   try {
     return await prisma.$transaction(async (tx: any) => {
+      let dateOfBirth: Date | null | undefined = undefined;
+      if (rawDob !== undefined) {
+        dateOfBirth = (rawDob && rawDob.trim() !== '') ? new Date(rawDob) : null;
+      }
+
       const student = await tx.student.update({
         where: { id },
         data: {
           ...studentData,
-          dateOfBirth: studentData.dateOfBirth ? new Date(studentData.dateOfBirth) : null,
+          ...(dateOfBirth !== undefined && { dateOfBirth }),
         }
       })
 
@@ -127,6 +156,45 @@ export async function updateStudent(id: string, data: UpdateStudentInput) {
               termId: currentTerm.id,
             }
           })
+
+          // Proactively create or update DRAFT ResultSheet and ResultEntries for all class subjects
+          const classSubjects = await tx.classSubject.findMany({
+            where: { classId }
+          })
+
+          const resultSheet = await tx.resultSheet.upsert({
+            where: {
+              studentId_sessionId_termId: {
+                studentId: id,
+                sessionId: currentSession.id,
+                termId: currentTerm.id,
+              }
+            },
+            update: { classId },
+            create: {
+              studentId: id,
+              classId,
+              sessionId: currentSession.id,
+              termId: currentTerm.id,
+              status: 'DRAFT',
+            }
+          })
+
+          for (const cs of classSubjects) {
+            await tx.resultEntry.upsert({
+              where: {
+                resultSheetId_classSubjectId: {
+                  resultSheetId: resultSheet.id,
+                  classSubjectId: cs.id,
+                }
+              },
+              update: {},
+              create: {
+                resultSheetId: resultSheet.id,
+                classSubjectId: cs.id,
+              }
+            })
+          }
         }
       }
 
@@ -136,5 +204,24 @@ export async function updateStudent(id: string, data: UpdateStudentInput) {
     if (error.code === 'P2002') throw new Error('A student with this Registration Number already exists.')
     throw new Error('Failed to update student.')
   }
+}
+
+export async function deleteStudent(id: string) {
+  const student = await prisma.student.findUnique({
+    where: { id },
+  })
+  if (!student) throw new Error('Student not found.')
+
+  await prisma.$transaction(async (tx: any) => {
+    // 1. Delete linked result sheets (cascade deletes entries)
+    await tx.resultSheet.deleteMany({
+      where: { studentId: id },
+    })
+
+    // 2. Delete the User record (cascade deletes student and enrollments)
+    await tx.user.delete({
+      where: { id: student.userId },
+    })
+  })
 }
 

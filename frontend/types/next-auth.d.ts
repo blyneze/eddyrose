@@ -11,7 +11,7 @@
 import type { DefaultSession, DefaultUser } from "next-auth"
 import type { DefaultJWT } from "next-auth/jwt"
 
-type UserRole = "SUPERADMIN" | "TEACHER" | "PARENT"
+type UserRole = "SUPERADMIN" | "TEACHER" | "STUDENT" | "PARENT"
 
 declare module "next-auth" {
   interface User extends DefaultUser {

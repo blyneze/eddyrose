@@ -1,20 +1,39 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { Search, User, Edit2, Filter, X } from "lucide-react";
+import { useState, useMemo, useTransition } from "react";
+import { Search, User, Edit2, Filter, X, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { calculateAge } from "@/lib/utils/age";
+import { deleteStudentAction } from "@/app/actions/student";
 
 interface StudentListProps {
   initialStudents: any[];
   classes: any[];
+  userRole?: string;
 }
 
-export default function StudentList({ initialStudents, classes }: StudentListProps) {
+export default function StudentList({ initialStudents, classes, userRole = "SUPERADMIN" }: StudentListProps) {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedClass, setSelectedClass] = useState("all");
   const [selectedGender, setSelectedGender] = useState("all");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  const handleDelete = async (id: string, name: string) => {
+    if (!confirm(`Are you sure you want to delete ${name}? This will permanently delete their account, class enrollments, and all associated grade sheets.`)) {
+      return;
+    }
+    startTransition(async () => {
+      try {
+        await deleteStudentAction(id);
+        router.refresh();
+      } catch (err: any) {
+        alert(err.message || "Failed to delete student.");
+      }
+    });
+  };
 
   const filteredStudents = useMemo(() => {
     return initialStudents.filter((student) => {
@@ -128,13 +147,13 @@ export default function StudentList({ initialStudents, classes }: StudentListPro
               <th className="px-4 py-4 sm:px-6">Student & Class</th>
               <th className="px-4 py-4 hidden md:table-cell">Reg Number</th>
               <th className="px-4 py-4 text-center">Age</th>
-              <th className="px-4 py-4 text-right sm:px-6">Actions</th>
+              {userRole === "SUPERADMIN" && <th className="px-4 py-4 text-right sm:px-6">Actions</th>}
             </tr>
           </thead>
           <tbody className="divide-y divide-zinc-50">
             {filteredStudents.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-6 py-20 text-center">
+                <td colSpan={userRole === "SUPERADMIN" ? 4 : 3} className="px-6 py-20 text-center">
                    <div className="flex flex-col items-center gap-2 opacity-30">
                      <User size={48} />
                      <p className="font-bold text-zinc-900 uppercase tracking-widest text-[10px]">No Results Found</p>
@@ -183,15 +202,27 @@ export default function StudentList({ initialStudents, classes }: StudentListPro
                         {age || "—"}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-right sm:px-6">
-                      <Link 
-                        href={`/portal/students/${student.id}/edit`}
-                        className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-zinc-400 hover:text-eddyrose-light hover:bg-eddyrose-light/5 transition-all active:scale-90"
-                        title="Edit Student"
-                      >
-                        <Edit2 size={16} />
-                      </Link>
-                    </td>
+                      {userRole === "SUPERADMIN" && (
+                        <td className="px-4 py-3 text-right sm:px-6">
+                          <div className="flex items-center justify-end gap-1.5">
+                            <Link 
+                              href={`/portal/students/${student.id}/edit`}
+                              className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-zinc-400 hover:text-eddyrose-light hover:bg-eddyrose-light/5 transition-all active:scale-90"
+                              title="Edit Student"
+                            >
+                              <Edit2 size={16} />
+                            </Link>
+                            <button
+                              onClick={() => handleDelete(student.id, student.name)}
+                              disabled={isPending}
+                              className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-zinc-400 hover:text-red-600 hover:bg-red-50 transition-all active:scale-90 disabled:opacity-50"
+                              title="Delete Student"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </div>
+                        </td>
+                      )}
                   </tr>
                 );
               })

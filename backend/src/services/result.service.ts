@@ -105,15 +105,21 @@ export async function getResultForEdit(id: string) {
 
 export async function updateResultScores(
   resultSheetId: string,
-  scores: Record<string, { test: number | null; exam: number | null }>
+  scores: Record<string, { test: number | null; exam: number | null }>,
+  details?: {
+    teacherComment?: string | null
+    closingDate?: string | null
+    resumptionDate?: string | null
+    affectiveDomain?: Record<string, number> | null
+  }
 ) {
   const sheet = await prisma.resultSheet.findUnique({ where: { id: resultSheetId } })
   if (!sheet) throw new Error('Result sheet not found.')
   if (sheet.status !== 'DRAFT' && sheet.status !== 'REJECTED')
     throw new Error('Only DRAFT or REJECTED results can be edited.')
 
-  await prisma.$transaction(
-    Object.entries(scores).map(([entryId, score]) =>
+  await prisma.$transaction([
+    ...Object.entries(scores).map(([entryId, score]) =>
       prisma.resultEntry.update({
         where: { id: entryId },
         data: {
@@ -121,12 +127,18 @@ export async function updateResultScores(
           examScore: score.exam !== null ? Math.max(0, Math.min(70, score.exam)) : null,
         },
       })
-    )
-  )
-
-  if (sheet.status === 'REJECTED') {
-    await prisma.resultSheet.update({ where: { id: resultSheetId }, data: { status: 'DRAFT' } })
-  }
+    ),
+    prisma.resultSheet.update({
+      where: { id: resultSheetId },
+      data: {
+        status: sheet.status === 'REJECTED' ? 'DRAFT' : undefined,
+        ...(details?.teacherComment !== undefined && { teacherComment: details.teacherComment }),
+        ...(details?.closingDate !== undefined && { closingDate: details.closingDate ? new Date(details.closingDate) : null }),
+        ...(details?.resumptionDate !== undefined && { resumptionDate: details.resumptionDate ? new Date(details.resumptionDate) : null }),
+        ...(details?.affectiveDomain !== undefined && { affectiveDomain: details.affectiveDomain as any }),
+      }
+    })
+  ])
 }
 
 export async function getResultSheetByStudentSessionTerm(

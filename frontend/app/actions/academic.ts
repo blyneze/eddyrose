@@ -27,6 +27,15 @@ export async function createSessionAction(formData: FormData) {
   revalidatePath("/portal/classes")
 }
 
+export async function updateSessionAction(id: string, name: string) {
+  const session = await auth()
+  if (session?.user?.role !== "SUPERADMIN") throw new Error("Unauthorized")
+
+  const validatedName = nameSchema.parse(name)
+  await backendAcademic.updateSession(session.user, id, validatedName)
+  revalidatePath("/portal/classes")
+}
+
 export async function createTermAction(formData: FormData) {
   const session = await auth()
   if (session?.user?.role !== "SUPERADMIN") throw new Error("Unauthorized")
@@ -44,6 +53,14 @@ export async function createSubjectAction(formData: FormData) {
   const name = nameSchema.parse(formData.get("name"))
   
   await backendAcademic.createSubject(session.user, name)
+  revalidatePath("/portal/classes")
+}
+
+export async function deleteSubjectAction(id: string) {
+  const session = await auth()
+  if (session?.user?.role !== "SUPERADMIN") throw new Error("Unauthorized")
+
+  await backendAcademic.deleteSubject(session.user, id)
   revalidatePath("/portal/classes")
 }
 

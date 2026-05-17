@@ -24,6 +24,8 @@ export async function createUserAction(formData: FormData) {
     name: formData.get("name") as string,
     loginId: formData.get("loginId") as string,
     role: formData.get("role") as string,
+    email: formData.get("email") as string || undefined,
+    phoneNumber: formData.get("phoneNumber") as string || undefined,
   };
 
   // Password is auto-generated in backend

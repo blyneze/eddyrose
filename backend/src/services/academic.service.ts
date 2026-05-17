@@ -21,6 +21,32 @@ export async function getFullAcademicData() {
       orderBy: { name: 'asc' },
     }),
   ])
+
+  // Proactively heal database state if multiple sessions/terms are active
+  const activeSessions = sessions.filter((s: any) => s.isCurrent)
+  if (activeSessions.length > 1) {
+    const keepSession = activeSessions[0]
+    await prisma.session.updateMany({
+      where: { id: { not: keepSession.id } },
+      data: { isCurrent: false }
+    })
+    sessions.forEach((s: any) => {
+      if (s.id !== keepSession.id) s.isCurrent = false
+    })
+  }
+
+  const activeTerms = terms.filter((t: any) => t.isCurrent)
+  if (activeTerms.length > 1) {
+    const keepTerm = activeTerms[0]
+    await prisma.term.updateMany({
+      where: { id: { not: keepTerm.id } },
+      data: { isCurrent: false }
+    })
+    terms.forEach((t: any) => {
+      if (t.id !== keepTerm.id) t.isCurrent = false
+    })
+  }
+
   const teachers = teacherUsers.filter((t: any) => t.teacherProfile)
   return { classes, sessions, terms, subjects, teachers }
 }
@@ -33,12 +59,41 @@ export async function createSession(name: string) {
   return prisma.session.create({ data: { name } })
 }
 
+export async function updateSession(id: string, name: string) {
+  return prisma.session.update({
+    where: { id },
+    data: { name }
+  })
+}
+
 export async function createTerm(name: string) {
   return prisma.term.create({ data: { name } })
 }
 
 export async function createSubject(name: string) {
   return prisma.subject.create({ data: { name } })
+}
+
+export async function deleteSubject(id: string) {
+  return prisma.$transaction(async (tx: any) => {
+    const classSubjects = await tx.classSubject.findMany({
+      where: { subjectId: id },
+      select: { id: true }
+    })
+    const classSubjectIds = classSubjects.map((cs: any) => cs.id)
+    
+    if (classSubjectIds.length > 0) {
+      await tx.resultEntry.deleteMany({
+        where: {
+          classSubjectId: { in: classSubjectIds }
+        }
+      })
+    }
+
+    return tx.subject.delete({
+      where: { id }
+    })
+  })
 }
 
 export async function setAsCurrent(id: string, type: 'SESSION' | 'TERM') {

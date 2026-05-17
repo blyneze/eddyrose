@@ -7,7 +7,7 @@ import StudentList from "@/components/students/StudentList"
 
 export default async function StudentsPage() {
   const session = await auth()
-  if (session?.user?.role !== "SUPERADMIN") redirect("/")
+  if (!session?.user?.role || !["SUPERADMIN", "TEACHER"].includes(session.user.role)) redirect("/")
 
   const [students, academicData] = await Promise.all([
     backendStudents.list(session.user),
@@ -22,17 +22,19 @@ export default async function StudentsPage() {
           <p className="text-zinc-500 text-sm">Manage student enrollment, profiles, and records.</p>
         </div>
         <div className="flex items-center gap-3">
-          <Link
-            href="/portal/students/new"
-            className="bg-eddyrose-deep hover:bg-eddyrose-light text-white px-5 py-3 rounded-xl text-sm font-bold transition-all flex items-center gap-2 shadow-lg shadow-eddyrose-deep/20 active:scale-95"
-          >
-            <Plus size={18} />
-            Enroll New Student
-          </Link>
+          {session.user.role === "SUPERADMIN" && (
+            <Link
+              href="/portal/students/new"
+              className="bg-eddyrose-deep hover:bg-eddyrose-light text-white px-5 py-3 rounded-xl text-sm font-bold transition-all flex items-center gap-2 shadow-lg shadow-eddyrose-deep/20 active:scale-95"
+            >
+              <Plus size={18} />
+              Enroll New Student
+            </Link>
+          )}
         </div>
       </div>
 
-      <StudentList initialStudents={students} classes={academicData.classes || []} />
+      <StudentList initialStudents={students} classes={academicData.classes || []} userRole={session.user.role as string} />
     </div>
   )
 }

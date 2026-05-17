@@ -6,19 +6,21 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import StudentForm from "@/components/students/StudentForm";
 
-export default async function EditStudentPage({ params }: { params: { id: string } }) {
+export default async function EditStudentPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
   if (session?.user?.role !== "SUPERADMIN") redirect("/");
 
+  const { id } = await params;
+
   const [student, { classes }] = await Promise.all([
-    backendStudents.getById(session.user, params.id),
+    backendStudents.getById(session.user, id),
     backendAcademic.getData(session.user),
   ]);
 
   if (!student) notFound();
 
   // Create a bound action for the form
-  const boundUpdateAction = updateStudentAction.bind(null, params.id);
+  const boundUpdateAction = updateStudentAction.bind(null, id);
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">

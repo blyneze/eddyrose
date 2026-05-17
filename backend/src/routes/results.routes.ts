@@ -215,7 +215,7 @@ router.put('/:id/scores', requireRole('TEACHER'), async (req, res) => {
   }
 
   try {
-    await updateResultScores(parsed.data, req.body.scores)
+    await updateResultScores(parsed.data, req.body.scores, req.body.details)
     res.json({ success: true })
   } catch (err: any) {
     res.status(400).json({ error: err.message })

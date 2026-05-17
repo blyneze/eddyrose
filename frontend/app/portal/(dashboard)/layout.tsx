@@ -3,6 +3,7 @@ import { redirect } from "next/navigation"
 import Sidebar from "@/components/portal/Sidebar"
 import Topbar from "@/components/portal/Topbar"
 import { SidebarProvider } from "@/components/portal/SidebarProvider"
+import { backendContent } from "@/lib/backend"
 
 export default async function DashboardLayout({
   children,
@@ -15,12 +16,15 @@ export default async function DashboardLayout({
     redirect('/portal')
   }
 
+  const contentData = await backendContent.get(session.user as any).catch(() => ({ announcements: [] }))
+  const announcements = contentData.announcements || []
+
   return (
     <SidebarProvider>
       <div className="flex h-screen overflow-hidden bg-zinc-50 font-sans">
         <Sidebar role={session.user.role as any} />
         <div className="flex flex-col flex-1 overflow-hidden">
-          <Topbar user={session.user as any} />
+          <Topbar user={session.user as any} announcements={announcements} />
           <main className="flex-1 overflow-y-auto p-6 md:p-8">
             {children}
           </main>

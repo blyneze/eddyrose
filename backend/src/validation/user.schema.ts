@@ -10,8 +10,10 @@ export const createUserSchema = z.object({
     .max(100, 'Login ID is too long')
     .trim()
     .toLowerCase(),
-  password: z.string().min(6, 'Password must be at least 6 characters').max(128, 'Password is too long'),
+  password: z.string().min(6, 'Password must be at least 6 characters').max(128, 'Password is too long').optional(),
   role: roleEnum,
+  email: z.string().email('Invalid email address').optional().or(z.literal('')),
+  phoneNumber: z.string().optional().or(z.literal('')),
 })
 
 export type CreateUserInput = z.infer<typeof createUserSchema>
